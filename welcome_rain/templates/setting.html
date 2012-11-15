@@ -1,0 +1,366 @@
+{% extends "component/_dialogLayout.html" %}
+
+{% block content %}
+
+<div class="dialogWrapper">
+
+	<!-- Build page from here: -->
+	<div class="row-fluid">
+
+		<div class="span12">
+
+			<div class="page-header">
+				<h3 class="clearfix"><span class="icon16 icomoon-icon-loop"></span><span>Setting</span></h3>
+			</div>
+
+			<div class="box">
+
+				<div class="title">
+
+					<h3 class="borderBottom">
+						<span class="icon16 brocco-icon-refresh"></span><span>Setting <small>and tabs in box</small></span>
+					</h3>
+
+				</div>
+				<div class="content noPad">
+
+					<ul class="nav nav-tabs" id="myTabLoaders">
+						<li class="active">
+							<a href="#general" class="setting_tap">General <span class="label label-info">46</span></a>
+						</li>
+						<li>
+							<a href="#database" class="setting_tap">Database <span class="label label-info">46</span></a>
+						</li>
+						<li>
+							<a href="#gmond" class="setting_tap">GMond <span class="label label-info">19</span></a>
+						</li>
+						<li>
+							<a href="#gmetad" class="setting_tap">GMetaD <span class="label label-info">7</span></a>
+						</li>
+					</ul>
+
+					<div class="tab-content">
+						<div class="tab-pane active" id="general">
+							<div class="center clearfix">
+
+								<div class="form-row row-fluid">
+									<div class="span12">
+										<div class="row-fluid">
+											<label class="form-label span4" for="normal">rrd_path</label>
+											<input class="span8 text" id="rrd_path" type="text" value="{{profile.rrd_path}}">
+										</div>
+									</div>
+								</div>
+
+								<div class="form-row row-fluid">
+									<div class="span12">
+										<div class="row-fluid">
+											<label class="form-label span4" for="normal">api_server</label>
+											<input class="span8 text" id="api_server" type="text" value="{{profile.api_server}}">
+										</div>
+									</div>
+								</div>
+
+								<div class="form-row row-fluid">
+									<div class="span12">
+										<div class="row-fluid">
+											<label class="form-label span4" for="normal">api_port</label>
+											<input class="span8 text" id="api_port" type="text" value="{{profile.api_port}}">
+										</div>
+									</div>
+								</div>
+
+								<div class="form-row row-fluid">
+									<div class="span12">
+										<div class="row-fluid">
+											<label class="form-label span4" for="normal">gmetad_ip</label>
+											<input class="span8 text" id="gmetad_ip" type="text" value="{{profile.gmetad_ip}}">
+										</div>
+									</div>
+								</div>
+								
+								<div class="form-row row-fluid">
+									<div class="span12">
+										<div class="row-fluid">
+											<label class="form-label span4" for="normal">gmetad_port</label>
+											<input class="span8 text" id="gmetad_port" type="text" value="{{profile.gmetad_port}}">
+										</div>
+									</div>
+								</div>
+								
+								<div class="form-row row-fluid">
+									<div class="span12">
+										<div class="row-fluid">
+											<label class="form-label span4" for="normal">grahp_realtime_interval</label>
+											<input class="span8 text" id="grahp_realtime_interval" type="text" value="{{profile.grahp_realtime_interval}}" >
+										</div>
+									</div>
+								</div>
+								
+								<div class="form-row row-fluid">
+									<div class="span12">
+										<div class="row-fluid">
+											<label class="form-label span4" for="normal">grahp_grid_outlineWidth</label>
+											<input class="span8 text" id="grahp_grid_outlineWidth" type="text" value="{{profile.grahp_grid_outlineWidth}}">
+										</div>
+									</div>
+								</div>
+								
+								<div class="form-row row-fluid">
+									<div class="span12 controls">
+										<!--<div class="row-fluid">
+											<label class="form-label span4" for="normal">grahp_line_fill</label>
+											<input class="span8 text" id="grahp_line_fill" type="text" value="{{profile.grahp_line_fill}}">
+										</div>-->
+										<label class="form-label span4" for="normal">grahp_line_fill</label>
+                                        <input type="checkbox" id="grahp_line_fill" {% if profile.grahp_line_fill %}checked="checked"{% endif %} class="ibutton" /> 
+                                                
+									</div>
+								</div>
+								
+								<div class="form-row row-fluid">
+                                	<div class="span12">
+                                		<div class="row-fluid">
+                                			<label class="form-label span4" for="checkboxes">grahp_grid_color</label>
+                                    		<div class="span8" style="position:relative;">
+                                            <input type="text" id="grahp_grid_color_val" name="color" value="{{profile.grahp_grid_color}}" /><div class="grahp_grid_color_picker"></div>
+                                            </div>
+                                        </div>
+                                	</div> 
+                                </div>
+                                
+                                <div class="form-row row-fluid">
+                                	<div class="span12">
+                                		<div class="row-fluid">
+                                			<label class="form-label span4" for="checkboxes">grahp_line_color</label>
+                                    		<div class="span8" style="position:relative;">
+                                            <input type="text" id="grahp_line_color_val" name="color" value="{{profile.grahp_line_color}}" /><div class="grahp_line_color_picker"></div>
+                                            </div>
+                                        </div>
+                                	</div> 
+                                </div>
+                                        
+                               
+							</div>
+						</div>
+						<div class="tab-pane" id="database">
+							<div class="center clearfix">
+
+								<div class="form-row row-fluid">
+									<div class="span12">
+										<div class="row-fluid">
+											<label class="form-label span4" for="normal">Server IP</label>
+											<input class="span8 text" id="normalInput" type="text">
+										</div>
+									</div>
+								</div>
+
+								<div class="form-row row-fluid">
+									<div class="span12">
+										<div class="row-fluid">
+											<label class="form-label span4" for="normal">Server Port</label>
+											<input class="span8 text" id="normalInput" type="text">
+										</div>
+									</div>
+								</div>
+
+								<div class="form-row row-fluid">
+									<div class="span12">
+										<div class="row-fluid">
+											<label class="form-label span4" for="normal">User ID</label>
+											<input class="span8 text" id="normalInput" type="text">
+										</div>
+									</div>
+								</div>
+
+								<div class="form-row row-fluid">
+									<div class="span12">
+										<div class="row-fluid">
+											<label class="form-label span4" for="normal">Password</label>
+											<input class="span8 text" id="normalInput" type="password">
+										</div>
+									</div>
+								</div>
+								<div class="form-row row-fluid">
+									<div class="span12">
+										<div class="row-fluid">
+											<label class="form-label span4" for="normal">Database</label>
+											<input class="span8 text" id="normalInput" type="text">
+										</div>
+									</div>
+								</div>
+
+							</div>
+						</div>
+
+						<div class="tab-pane" id="gmond">
+							<textarea class="span12" id="gmond_val" rows="16">
+{% for line in gmond_conf %}
+{{line}}
+{% endfor %}
+</textarea>							
+							
+							
+
+
+
+						</div>
+						<div class="tab-pane" id="gmetad">
+							<div class="form-row row-fluid">
+								<div class="span12">
+									<div class="row-fluid">
+										<textarea class="span12" id="gmetad_val" rows="16">
+{% for line in gmetad_conf %}
+{{line}}
+{% endfor %}
+</textarea>
+									</div>
+								</div>
+
+							</div>
+
+						</div>
+
+					</div>
+
+					<div class="actionBar">
+						<a href="#" id="close_btn" class="btn">Close</a>
+						<a href="#general" id="save_btn" tag="#general" class="btn btn-info">Save</a>
+					</div>
+
+				</div>
+			</div><!-- End .row-fluid -->
+
+		</div>
+
+	</div>
+
+	<script type="text/javascript">
+	
+		$('.grahp_line_color_picker').farbtastic('#grahp_line_color_val');
+		$('.grahp_grid_color_picker').farbtastic('#grahp_grid_color_val');
+		
+		function getTagName(aHref) {
+			return aHref.split('#')[1];
+		}
+
+		function addTagSplit(tag) {
+			return '#' + tag
+		}
+
+		function closeWindow() {
+			window.close();
+		}
+
+
+		$(".setting_tap").click(function() {
+			var tag = addTagSplit(getTagName(this.href));
+			//console.log(tag)
+			$("#save_btn").attr('href', tag);
+		})
+		$("#close_btn").click(function() {
+			closeWindow();
+		})
+		$("#save_btn").click(function() {
+			//console.log($("#gmetad_val").val())
+			console.log(this)
+			//console.log(getTagName(this.href))
+			var tag = getTagName(this.href);
+			settingSaveHandler(tag)
+		})
+		function settingSaveHandler(tag) {
+			if (tag == 'gmetad')
+				updateGmetad();
+			else if (tag == 'gmond')
+				updateGmond();
+			else if (tag == 'general')
+				updateConfig();
+			else
+				console.log(tag)
+				return false;
+		}
+		function updateConfig(){
+			/*console.log($("#rrd_path").val());
+			console.log($("#api_server").val());
+			console.log($("#api_port").val());
+			console.log($("#gmetad_ip").val());
+			console.log($("#gmetad_port").val());
+			console.log($("#grahp_realtime_interval").val());
+			console.log($("#grahp_grid_outlineWidth").val());
+			console.log($("#grahp_line_fill").val());
+			console.log($("#grahp_line_color_val").val());
+			console.log($("#grahp_grid_color_val").val());
+			
+			
+			console.log($("#grahp_line_fill").is(':checked')?1:0);*/
+			$.ajax({
+				url : '/api/updateUserConf/',
+				type : 'POST',
+				dataType : 'json',
+				data : {
+					rrd_path : $("#rrd_path").val(),
+					api_server : $("#api_server").val(),
+					api_port : $("#api_port").val(),
+					gmetad_ip : $("#gmetad_ip").val(),
+					gmetad_port : $("#gmetad_port").val(),
+					grahp_realtime_interval : $("#grahp_realtime_interval").val(),
+					grahp_grid_outlineWidth : $("#grahp_grid_outlineWidth").val(),
+					grahp_line_fill : $("#grahp_line_fill").is(':checked')?1:0,
+					grahp_line_color : $("#grahp_line_color_val").val(),
+					grahp_grid_color : $("#grahp_grid_color_val").val(),
+				},
+				success : function(data) {
+					console.log(data);
+					closeWindow();
+				},
+				error : function(jqXHR, textStatus, errorThrown) {
+					console.log(jqXHR)
+					console.log(textStatus)
+					console.log(errorThrown)
+					return false;
+				}
+			});
+		}
+		function updateGmetad() {
+			$.ajax({
+				url : '/api/updateGmetadConf/',
+				type : 'POST',
+				dataType : 'json',
+				data : {
+					conf : $("#gmetad_val").val()
+				},
+				success : function(data) {
+					console.log(data);
+					closeWindow();
+				},
+				error : function(jqXHR, textStatus, errorThrown) {
+					console.log(jqXHR)
+					console.log(textStatus)
+					console.log(errorThrown)
+					return false;
+				}
+			});
+		}
+
+		function updateGmond() {
+			$.ajax({
+				url : '/api/updateGmondConf/',
+				type : 'POST',
+				dataType : 'json',
+				data : {
+					conf : $("#gmond_val").val()
+				},
+				success : function(data) {
+					console.log(data);
+					closeWindow();
+				},
+				error : function(jqXHR, textStatus, errorThrown) {
+					console.log(jqXHR)
+					console.log(textStatus)
+					console.log(errorThrown)
+					return false;
+				}
+			});
+		}
+	</script>
+	{% endblock %}}

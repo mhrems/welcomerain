@@ -1,0 +1,318 @@
+{% extends "component/_dashboardLayout.html" %}
+
+{% block content %}
+
+<script type="text/javascript" src="{{ STATIC_URL }}js/plugins/flotr2/flotr2.js"></script>
+<script type='text/javascript' src='{{ STATIC_URL }}js/plugins/mhr/dateformat.js'></script>
+<script type='text/javascript' src='{{ STATIC_URL }}js/plugins/mhr/table.js'></script>
+<script type='text/javascript' src='{{ STATIC_URL }}js/plugins/mhr/graph.js'></script>
+
+<div class="pageWrapper noPad">
+
+	<div class="row-fluid">
+
+		<div class="span4 noPad">
+			<div class="box2">
+
+				<h2> Basic Info</h2>
+
+				<table class="table">
+					<tr>
+						<td width="50%" class="blue"><strong>Server UP : {{ data.hostUp }}</strong></td>
+						<td width="50%" class="valueColumn red"><strong>Server Down : {{ data.hostDown }}</strong></td>
+					</tr>
+					<tr>
+						<td>Total CPU Count: {{ data.cpu_num }}</td>
+						<td  class="valueColumn">CPU Speed : mhz</td>						
+					</tr>
+					<tr>
+						<td>Memory : {{ data.mem_total }}</td>
+						<td class="valueColumn">Free Memory : {{ data.mem_total }}</td>
+					</tr>
+					<tr>
+						<td>Used Disk : {{ data.mem_total }}</td>
+						<td class="valueColumn"><strong>Free Disk : {{ data.mem_total }}</strong></td>
+					</tr>
+					<tr>
+						<td>Network Sent : {{ data.bytes_out }}b</td>
+						<td class="valueColumn">Received : {{ data.bytes_in }}b</td>
+					</tr>
+				</table>
+				<br>
+				<span class="right">Running Since : {{ data.localTime }}</span>
+
+<!--				
+				<h3 class="blue">Server UP : {{ data.hostUp }} , Server Down : {{ data.hostDown }}</h3>
+				<h4>Total CPU Count: {{ data.cpu_num }} , CPU Speed : mhz</h4>
+				<h4>Memory : {{ data.mem_total }} , Disk : {{ data.disk_total }}</h4>
+				<h4>Network Sent : {{ data.bytes_out }}b , Received : {{ data.bytes_in }}b</h4>
+-->
+
+			</div>
+		</div>
+		<div class="span8">
+			<div class="box2 borderInfo">
+
+				<table width="100%">
+					<tr>
+						<td><h3 class="center">Availability</h3></td>
+						<td><h3 class="center">CPU Usage</h3></td>
+						<td><h3 class="center">Disk Usage</h3></td>
+					</tr>
+					<tr>
+						<td>
+						<div class="circular-item" style="">
+							<span class="icon icomoon-icon-power"></span>
+							<input type="text" value="{{ availability }}" class="redCircle" readonly="readonly" data-bgColor="#FFFFFF">
+						</div></td>
+						<td>
+						<div class="circular-item">
+							<span class="icon icomoon-icon-cube"></span>
+							<input type="text" value="{{ cpu }}" class="blueCircle" readonly="readonly"  data-bgColor="#FFFFFF">
+						</div></td>
+						<td>
+						<div class="circular-item">
+							<span class="icon icomoon-icon-meter-fast"></span>
+							<input type="text" value="{{ disk }}" class="greenCircle" readonly="readonly"  data-bgColor="#FFFFFF">
+						</div></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+
+	</div>
+
+	<div class="row-fluid">
+
+		<div class="span6">
+			<div class="box gradient">
+				<div class="title">
+					<h3 class="borderBottom clearfix">
+						<span class="icon16 icomoon-icon-clock green"></span><span class="green">Current Status</span>
+						<form class="box-form right" action="/trend/None">
+							<button type="submit" class="btn btn-info btn-mini"> Detail</button>							
+						</form>
+					</h3>
+				</div>
+				<div class="content">
+					<div class="chart_box">
+						<div class="chart_title">
+							<h4 class="center green">
+							<br>
+							Workload Chart</h4>
+						</div>
+						<div class="chartPresent" id="graph0"></div>
+					</div>
+					<hr>
+					<div class="chart_box">
+						<div class="chart_title">
+							<h4 class="center green">
+							<br>
+							CPU Usage Chart</h4>
+						</div>
+						<div class="chartPresent" id="graph1"></div>
+					</div>
+					<hr>
+					<div class="chart_box">
+						<div class="chart_title">
+							<h4 class="center green">
+							<br>
+							Free Disk Chart</h4>
+						</div>
+						<div class="chartPresent" id="graph2"></div>
+					</div>
+					<hr>
+					<div class="chart_box">
+						<div class="chart_title">
+							<h4 class="center green">
+							<br>
+							Free Memory Chart</h4>
+						</div>
+						<div class="chartPresent" id="graph3"></div>
+					</div>
+					<hr>
+					<div class="chart_box">
+						<div class="chart_title">
+							<h4 class="center green">
+							<br>
+							Network Received Chart</h4>
+						</div>
+						<div class="chartPresent" id="graph4"></div>
+					</div>
+					<hr>
+					<div class="chart_box">
+						<div class="chart_title">
+							<h4 class="center green">
+							<br>
+							Network Sent Chart</h4>
+						</div>
+						<div class="chartPresent" id="graph5"></div>
+					</div>
+
+				</div>
+
+			</div>
+		</div>
+
+		<div class="span6">
+			<div class="box gradient borderRed">
+				<div class="title">
+					<h3 class="borderBottom"><span class="icon16 icomoon-icon-stats-up red"></span><span class="red">Bad</span></h3>
+				</div>
+				<div class="content noPad">
+
+					{% if stat.items %}
+					<table class="table table-striped">
+
+						<thead>
+							<tr>
+								<th>#</th>
+								<th>Server IP</th>
+								<th>Cluster</th>
+								<th>Data</th>
+								<th>Value</th>
+								<th>Probability</th>
+							</tr>
+						</thead>
+						<tbody>
+
+							{% for server in stat.items %}
+							{% if forloop.counter|divisibleby:2 %}
+							<tr>
+								{% else %}
+							<tr>
+								{% endif %}
+								<td> {{ forloop.counter }} </td>
+								<td>
+									<strong><a href="/trendServer/{{server.cluster}}/{{server.host}}" class="red">{{ server.host }}</a></strong>
+								</td>
+								<td> {{ server.cluster }} </td>
+								<td class="red"><strong>{{ server.dataSource }}</strong></td>
+								<td> {{ server.rawData }} </td>
+								<td class="red"><strong>{{ server.probability }} </strong></td>
+							</tr>
+							{% endfor %}
+
+						</tbody>
+
+					</table>
+					{% else %}
+
+					<ul class="activity">
+						<li>
+							<div class="noData">
+								<h3 class="centered"> No Bad Data!!! </h3>
+							</div>
+						</li>
+					</ul>
+					{% endif %}
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</div>
+
+</div>
+
+<!--
+<div id="edit_interval_time_dialog" title="dialog">
+<p>Data Interval Time : <input type="text" value="15"></p>
+<p><input id="edit_interval_time_btn" type="button" value="edit"></p>
+</div>
+<script type="text/javascript" src="{{ STATIC_URL }}js/plugins/flotr2/flotr2.min.js"></script>
+<script type='text/javascript' src='{{ STATIC_URL }}js/plugins/mhr/dateformat.js'></script>
+<script type='text/javascript' src='{{ STATIC_URL }}js/plugins/mhr/table.js'></script>
+-->
+
+<script type='text/javascript' src='{{ STATIC_URL }}js/plugins/knob/jquery.knob.js'></script>
+
+<script type="text/javascript">
+	$(".greenCircle").knob({
+		'min' : 0,
+		'max' : 100,
+		'displayInput' : 'hello',
+		'readOnly' : true,
+		'bgColor' : '#e2e2e2',
+		'fgColor' : '#9FC569',
+		'dynamicDraw' : true,
+		'thickness' : 0.2,
+		'tickColorizeValues' : true
+	});
+
+	$(".redCircle").knob({
+		'min' : 0,
+		'max' : 100,
+		'readOnly' : true,
+		/*
+		 'width': 80,
+		 'height': 80,
+		 */
+		'bgColor' : '#e2e2e2',
+		'fgColor' : '#ED7A53',
+		'dynamicDraw' : true,
+		'thickness' : 0.2,
+		'tickColorizeValues' : true
+	});
+	$(".blueCircle").knob({
+		'min' : 0,
+		'max' : 100,
+		'readOnly' : true,
+		/*
+		 'width': 80,
+		 'height': 80,
+		 */
+		'bgColor' : '#e2e2e2',
+		'fgColor' : '#88BBC8',
+		'dynamicDraw' : true,
+		'thickness' : 0.2,
+		'tickColorizeValues' : true
+	});
+
+	//sparkline in sidebar area
+	var graphData = new Array(5)
+	graphData[0] = [{{ graphData.load_fifteen }}];
+	graphData[1] = [{{ graphData.cpu_system }}];
+	graphData[2] = [{{ graphData.cpu_idle }}];
+	graphData[3] = [{{ graphData.bytes_in }}];
+	graphData[4] = [{{ graphData.bytes_out }}];
+
+	var placeholder = "";
+
+	for (var i = 0; i < 5; i++) {
+		placeholder = '#statData' + i;
+		$(placeholder).sparkline(graphData[i], {
+			width : 280, //Width of the chart - Defaults to 'auto' - May be any valid css width - 1.5em, 20px, etc (using a number without a unit specifier won't do what you want) - This option does nothing for bar and tristate chars (see barWidth)
+			height : 45, //Height of the chart - Defaults to 'auto' (line height of the containing tag)
+			lineColor : '#88bbc8', //Used by line and discrete charts to specify the colour of the line drawn as a CSS values string
+			fillColor : '#f2f7f9', //Specify the colour used to fill the area under the graph as a CSS value. Set to false to disable fill
+			spotColor : '#e72828', //The CSS colour of the final value marker. Set to false or an empty string to hide it
+			maxSpotColor : '#005e20', //The CSS colour of the marker displayed for the maximum value. Set to false or an empty string to hide it
+			minSpotColor : '#f7941d', //The CSS colour of the marker displayed for the mimum value. Set to false or an empty string to hide it
+			spotRadius : 3, //Radius of all spot markers, In pixels (default: 1.5) - Integer
+			lineWidth : 2//In pixels (default: 1) - Integer
+		});
+	}
+
+	var dateNow = new Date();
+	//var startTime = dateNow.format("yyyy:mm:dd:00:00");
+	var startTime = dateNow.format("yyyy:mm:dd:00:00");
+	var endTime = dateNow.format("yyyy:mm:dd:HH:MM");
+
+	var chartData = "__SummaryInfo__/load_fifteen.rrd;";
+	chartData += "__SummaryInfo__/cpu_user.rrd;";
+	chartData += "__SummaryInfo__/disk_free.rrd;";
+	chartData += "__SummaryInfo__/mem_free.rrd;";
+	chartData += "__SummaryInfo__/bytes_in.rrd;";
+	chartData += "__SummaryInfo__/bytes_out.rrd";
+
+	//var cChartCreate = new ChartCreate();
+	//cChartCreate.draw('graph0',[[[0,5],[1,5],[2,8],[3,7],[4,10],[5,6],[6,5],[7,1],[8,5],[9,2]]],[[1,'red'],[2,'red']]);
+
+	var cCharter = new Charter();
+	cCharter.createUserLayoutChart('graph', chartData, startTime, endTime);
+
+</script>
+{% endblock %}

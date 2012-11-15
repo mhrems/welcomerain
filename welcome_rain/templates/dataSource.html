@@ -1,0 +1,173 @@
+{% extends "component/_dashboardLayout.html" %}
+
+{% block content %}
+
+<script type="text/javascript" src="{{ STATIC_URL }}js/plugins/flotr2/flotr2.js"></script>
+<script type='text/javascript' src='{{ STATIC_URL }}js/plugins/mhr/dateformat.js'></script>
+<script type='text/javascript' src='{{ STATIC_URL }}js/plugins/mhr/table.js'></script>
+<script type='text/javascript' src='{{ STATIC_URL }}js/plugins/mhr/graph.js'></script>
+
+<div class="pageWrapper noPad">
+
+	<div class="row-fluid">
+		<div class="span12 noPad">
+			<div class="page-header">
+				<h4 class="clearfix">
+					<span class="icon16 icomoon-icon-loop"></span>
+					<span>{{ gridName }} / {{ clusterName }} / {{ serverName }} / {{ dataSourceName }}</span>
+				</h4>
+			</div>
+		</div>
+	</div>
+	
+	<div class="row-fluid">
+		<div class="span12 noPad">
+			<div class="box gradient">
+				<div class="title">
+					<h2 class="clearfix"> 
+						<span>{{dataSourceName}}&nbsp;&nbsp;<small>linux</small></span>
+					</h2>									
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="row-fluid">
+		<div class="span4 noPad">
+			<div class="box2">
+
+				<h2>Histogram</h2>
+
+				<table class="table">
+					<tr>
+						<td width="50%" class="blue"><strong>Server UP : {{ data.hostUp }}</strong></td>
+						<td width="50%" class="valueColumn red"><strong>Server Down : {{ data.hostDown }}</strong></td>
+					</tr>
+					<tr>
+						<td>Total CPU Count: {{ data.cpu_num }}</td>
+						<td  class="valueColumn">CPU Speed : mhz</td>						
+					</tr>
+					<tr>
+						<td>Memory : {{ data.mem_total }}</td>
+						<td class="valueColumn">Free Memory : {{ data.mem_total }}</td>
+					</tr>
+					<tr>
+						<td>Used Disk : {{ data.mem_total }}</td>
+						<td class="valueColumn"><strong>Free Disk : {{ data.mem_total }}</strong></td>
+					</tr>
+					<tr>
+						<td>Network Sent : {{ data.bytes_out }}b</td>
+						<td class="valueColumn">Received : {{ data.bytes_in }}b</td>
+					</tr>
+				</table>
+				<br>
+				<span class="right">Running Since : {{ data.localTime }}</span>
+
+<!--				
+				<h3 class="blue">Server UP : {{ data.hostUp }} , Server Down : {{ data.hostDown }}</h3>
+				<h4>Total CPU Count: {{ data.cpu_num }} , CPU Speed : mhz</h4>
+				<h4>Memory : {{ data.mem_total }} , Disk : {{ data.disk_total }}</h4>
+				<h4>Network Sent : {{ data.bytes_out }}b , Received : {{ data.bytes_in }}b</h4>
+-->
+
+			</div>
+		</div>
+		<div class="span4">
+			<div class="box2">
+				<h2>Alerts Chart</h2>
+			</div>
+		</div>
+		<div class="span4">
+			<div class="box2">
+				<h2>Stats Chart</h2>
+			</div>
+		</div>
+
+	</div>
+
+	<div class="row-fluid">
+
+		<div class="span8">
+			<div class="box gradient">
+				<div class="title">
+					<h3 class="clearfix">
+						<span class="icon16 icomoon-icon-clock green"></span><span class="green">Current Status</span>
+					</h3>
+				</div>
+				<div class="content">
+				</div>
+
+			</div>
+		</div>
+
+		<div class="span4">
+			<div class="box gradient">
+				<div class="title">
+					<h3 class="clearfix">
+						<span class="icon16 icomoon-icon-clock"></span><span>Values</span>
+					</h3>
+				</div>
+				<div class="content">
+					<table class="table">
+						<thead>
+							<th>#</th>
+							<th>DateTime</th>
+							<th>Value</th>
+						</thead>
+						<tbody>
+							{% for dataSource in server.dataSource.items %} 
+								{% if forloop.counter|divisibleby:2 %}
+								<tr>
+									{% else %}
+								<tr>
+								{% endif %}
+							
+									<td>{{ forloop.counter }}</td>
+									<td>{{ dataSource.name }}</td>
+									<td>{{ dataSource.data.rawData }}</td>
+								</tr>
+							{% endfor %}	
+	
+						</tbody>
+					</table>
+					
+				</div>
+
+			</div>
+		</div>
+
+	</div>
+
+</div>
+
+<!--
+<div id="edit_interval_time_dialog" title="dialog">
+<p>Data Interval Time : <input type="text" value="15"></p>
+<p><input id="edit_interval_time_btn" type="button" value="edit"></p>
+</div>
+<script type="text/javascript" src="{{ STATIC_URL }}js/plugins/flotr2/flotr2.min.js"></script>
+<script type='text/javascript' src='{{ STATIC_URL }}js/plugins/mhr/dateformat.js'></script>
+<script type='text/javascript' src='{{ STATIC_URL }}js/plugins/mhr/table.js'></script>
+-->
+<script>
+
+	var dateNow = new Date();
+	//var startTime = dateNow.format("yyyy:mm:dd:00:00");
+	var startTime = dateNow.format("yyyy:mm:dd:00:00");
+	var endTime = dateNow.format("yyyy:mm:dd:HH:MM");
+
+	var chartData = "__SummaryInfo__/load_fifteen.rrd;";
+	chartData += "__SummaryInfo__/cpu_user.rrd;";
+	chartData += "__SummaryInfo__/disk_free.rrd;";
+	chartData += "__SummaryInfo__/mem_free.rrd;";
+	chartData += "__SummaryInfo__/bytes_in.rrd;";
+	chartData += "__SummaryInfo__/bytes_out.rrd";
+
+	//var cChartCreate = new ChartCreate();
+	//cChartCreate.draw('graph0',[[[0,5],[1,5],[2,8],[3,7],[4,10],[5,6],[6,5],[7,1],[8,5],[9,2]]],[[1,'red'],[2,'red']]);
+
+	var cCharter = new Charter();
+	cCharter.createUserLayoutChart('graph', chartData, startTime, endTime);
+
+</script>
+{% endblock %}

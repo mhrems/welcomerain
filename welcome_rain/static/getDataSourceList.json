@@ -1,0 +1,7 @@
+{"cluster": "mhr", 
+"host": "dev.local", 
+"dataSource": [{
+"name" : "ap_busy_workers.rrd"
+},{"name" : "ap_closing.rrd"
+}
+]}

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<!--[if IE 7]>    <html class="no-js ie7 ie" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js ie8 ie" lang="en"> <![endif]-->
+<!--[if IE 9]>    <html class="no-js ie9 ie" lang="en"> <![endif]-->
+<!--[if gt IE 9]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+
+<head>
+	{% include "component/_head.html" %}
+</head>
+	
+<body>		
+
+		
+	<!-- Main page container -->
+	<div id="wrapper">
+		
+		<div class="container-fluid">
+			
+			<div class="row-fluid">
+				{% include "component/_header.html" %}		
+			</div>
+
+
+
+			
+					<!-- Right (content) side -->
+					
+						{% block content %}{% endblock %}
+						
+					<!-- /Right (content) side -->
+
+				
+
+			<!-- Main page footer -->
+			<br>
+			
+			<footer class="footer">
+				{% include "component/_footer.html" %}
+			</footer>
+			<!-- /Main page footer -->
+				
+		</div>
+		<!-- /Main page container -->
+		
+		
+	</div>
+		
+		
+	<!-- Scripts -->
+	{% include "component/_script.html" %}
+				
+</body>
+	
+</html>

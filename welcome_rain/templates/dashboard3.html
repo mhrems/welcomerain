@@ -1,0 +1,265 @@
+{% extends "component/_dashboardLayout.html" %}
+
+{% block content %}
+
+<script type="text/javascript" src="{{ STATIC_URL }}js/plugins/flotr2/flotr2.js"></script>
+<script type='text/javascript' src='{{ STATIC_URL }}js/plugins/mhr/dateformat.js'></script>
+<script type='text/javascript' src='{{ STATIC_URL }}js/plugins/mhr/table.js'></script>
+<script type='text/javascript' src='{{ STATIC_URL }}js/plugins/mhr/graph.js'></script>
+
+
+<div class="row-fluid">
+	<div class="span12 noPad">
+		<br>
+	</div>
+</div>
+	
+<div class="row-fluid">
+
+		<div class="span12 noPad">
+
+			<div class="row-fluid">
+
+				<div class="span3">
+					<div class="box alignTextCenter noPad">
+						<h1 class="bigNumber">{{ total_server }}</h1>
+						<h4 class="gray">Total Server Count</h4>
+					</div>
+				</div>
+				<div class="span3">
+					<div class="box alignTextCenter">
+						<h1 class="bigNumber">{{ total_cpu }}</h1>
+						<h4 class="gray">Total CPU Count</h4>
+					</div>
+				</div>
+				<div class="span3">
+					<div class="box alignTextCenter">
+						<h1 class="bigNumber">{{ total_memory }}</h1>
+						<h4 class="gray">Total Memory Size(mb)</h4>
+					</div>
+				</div>
+				<div class="span3">
+					<div class="box alignTextCenter">
+						<h1 class="bigNumber">{{ total_disk }}</h1>
+						<h4 class="gray">Total Disk Size(mb)</h4>
+					</div>
+				</div>
+
+			</div>
+		</div>
+</div>
+
+<div class="row-fluid">
+
+	<div class="span6">
+		<div class="box gradient">
+			<div class="title borderBottom">
+				<h3 class="green">
+					<span class="icon16 icomoon-icon-clock green"></span><span>Good</span>&nbsp;&nbsp;&nbsp;<small>from {{ startTime }} to {{ endTime }}</small>
+				</h3>
+			</div>
+			<div class="content">
+				<div class="row-fluid">
+					<div class="span2">
+						<div class="chartNumber alignTextCenter">
+							<h1 class="green"><a href="/summary">{{ data.load_fifteen }}</a></h1>
+							<h5 class="gray">last value</h5>
+						</div>
+					</div>
+					<div class="span10">
+						<div class="chart_box">
+							<div class="chart_title">
+								<h4 class="center green">
+								<br>
+								Workload Chart</h4>
+							</div>
+							<div class="chartPresent" id="graph0"></div>
+						</div>
+					</div>
+				</div>
+
+				<div class="row-fluid">
+					<div class="span2">
+						<div class="chartNumber alignTextCenter">
+							<h1 class="green">{{ data.cpu_system }}</h1>
+							<h5 class="gray">last value</h5>
+						</div>
+					</div>
+					<div class="span10">
+						<div class="chart_box">
+							<div class="chart_title">
+								<h4 class="center green">
+								<br>
+								CPU Usage Chart</h4>
+							</div>
+							<div class="chartPresent" id="graph1"></div>
+						</div>						
+					</div>
+				</div>
+
+				<div class="row-fluid">
+					<div class="span2">
+						<div class="chartNumber alignTextCenter">
+							<h1 class="green">{{ data.mem_free }}</h1>
+							<h5 class="gray">last value</h5>
+						</div>
+					</div>
+					<div class="span10">
+						<div class="chart_box">
+							<div class="chart_title">
+								<h4 class="center green">
+								<br>
+								Free Memory Chart</h4>
+							</div>
+							<div class="chartPresent" id="graph2"></div>
+						</div>
+						
+					</div>
+				</div>
+
+			</div>
+
+		</div>
+	</div>
+
+	<div class="span6">
+		<div class="box gradient">
+			<div class="title">
+				<h3 class="red"><span class="icon16 icomoon-icon-clock red"></span><span>Bad</span>&nbsp;&nbsp;&nbsp;<small>from {{ startTime }} to {{ endTime }}</small></h3>
+			</div>
+			<div class="content">
+				<div class="row-fluid">
+					<div class="span2">
+						<div class="chartNumber alignTextCenter">
+							<h1 class="red">{{ badCount }}</h1>
+							<h5 class="gray">last value</h5>
+						</div>
+					</div>
+					<div class="span10">
+						<div class="chart_box">
+							<div class="chart_title">
+								<h4 class="center red">
+								<br>
+								Host Down Chart</h4>
+							</div>
+							<div class="chartPresent" id="serverDown0"></div>
+						</div>
+					</div>
+				</div>
+
+				<div class="row-fluid">
+					<div class="span2">
+						<div class="chartNumber alignTextCenter">
+							<h1 class="red">{{ badCount }}</h1>
+							<h5 class="gray">last value</h5>
+						</div>
+					</div>
+					<div class="span10">
+						<div class="chart_box">
+							<div class="chart_title">
+								<h4 class="center red">
+								<br>
+								Alert Chart</h4>
+							</div>
+							<div class="chartPresent" id="alert0"></div>
+						</div>						
+					</div>
+				</div>
+
+				<div class="row-fluid">
+					<div class="span2">
+						<div class="chartNumber alignTextCenter">
+							<h1 class="red">{{ badCount }}</h1>
+							<h5 class="gray">last value</h5>
+						</div>
+					</div>
+					<div class="span10">
+						<div class="chart_box">
+							<div class="chart_title">
+								<h4 class="center red">
+								<br>
+								Abnormal Stat Chart</h4>
+							</div>
+							<div class="chartPresent" id="abnormalstat0"></div>
+						</div>
+						
+					</div>
+				</div>
+
+			</div>
+
+		</div>
+	</div>
+
+</div>
+
+<!--
+<div id="edit_interval_time_dialog" title="dialog">
+<p>Data Interval Time : <input type="text" value="15"></p>
+<p><input id="edit_interval_time_btn" type="button" value="edit"></p>
+</div>
+<script type="text/javascript" src="{{ STATIC_URL }}js/plugins/flotr2/flotr2.min.js"></script>
+<script type='text/javascript' src='{{ STATIC_URL }}js/plugins/mhr/dateformat.js'></script>
+<script type='text/javascript' src='{{ STATIC_URL }}js/plugins/mhr/table.js'></script>
+-->
+    
+<script type="text/javascript">
+
+	function getUserChartConf(){
+		var grahp_realtime_interval = "{{profile.grahp_realtime_interval}}";
+		var grahp_grid_outlineWidth = "{{profile.grahp_grid_outlineWidth}}";
+		var grahp_line_fill = "{{profile.grahp_line_fill}}";
+		var grahp_grid_color = "{{profile.grahp_grid_color}}";
+		var grahp_line_color = "{{profile.grahp_line_color}}";
+		return {
+			grahp_realtime_interval : grahp_realtime_interval,
+			grahp_grid_outlineWidth : grahp_grid_outlineWidth,
+			grahp_line_fill : grahp_line_fill,
+			grahp_grid_color : grahp_grid_color,
+			grahp_line_color : grahp_line_color
+		};
+	}
+	
+	var dateNow = new Date();
+	var startTime = dateNow.format("yyyy:mm:dd:00:00");
+	var endTime = dateNow.format("yyyy:mm:dd:HH:MM");
+
+	var chartData = "__SummaryInfo__/load_fifteen.rrd;";
+	chartData += "__SummaryInfo__/cpu_user.rrd;";
+	//chartData += "__SummaryInfo__/disk_free.rrd;";
+	chartData += "__SummaryInfo__/mem_free.rrd";
+	//chartData += "__SummaryInfo__/bytes_in.rrd;";
+	//chartData += "__SummaryInfo__/bytes_out.rrd";
+
+	//var cChartCreate = new ChartCreate();
+	//cChartCreate.draw('graph0',[[[0,5],[1,5],[2,8],[3,7],[4,10],[5,6],[6,5],[7,1],[8,5],[9,2]]],[[1,'red'],[2,'red']]);
+
+	var cCharter = new Charter();
+	cCharter.createUserLayoutChart('graph', chartData, startTime, endTime);
+
+	function drawServerDownHourlyChart(startTime,endTime) {
+		var cCharter = new Charter();
+		var chartConf = getUserChartConf()
+		cCharter.createApiChart('serverDown','unspecified/121.78.236.134/rack_-dev-ttyUSB1.rrd','/api/getServerDownHourlyData/',chartConf,startTime,endTime);
+		//cCharter.createDashboardChart();
+	}
+	drawServerDownHourlyChart();
+
+	function drawAlertHourlyChart(startTime,endTime) {
+		var cCharter = new Charter();
+		var chartConf = getUserChartConf()
+		cCharter.createApiChart('alert','unspecified/121.78.236.134/rack_-dev-ttyUSB1.rrd','/api/getAlertHourlyData/',chartConf,startTime,endTime);
+		//cCharter.createDashboardChart();
+	}
+	drawAlertHourlyChart();
+
+	function drawAbnormalStatHourlyChart(startTime,endTime) {
+		var cCharter = new Charter();
+		var chartConf = getUserChartConf()
+		cCharter.createApiChart('abnormalstat','unspecified/121.78.236.134/rack_-dev-ttyUSB1.rrd','/api/getAbnormalStatHourlyData/',chartConf,startTime,endTime);
+		//cCharter.createDashboardChart();
+	}
+	drawAbnormalStatHourlyChart();
+
+</script>
+{% endblock %}

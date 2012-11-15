@@ -1,0 +1,70 @@
+{% extends "component/_dashboardLayout.html" %}
+
+{% block content %}
+
+<div class="pageWrapper noPad">
+
+	<div class="row-fluid">
+		<div class="span12">
+			<div class="box gradient">
+
+				<div class="title">
+
+					<h3>
+						<span class="icon16 icomoon-icon-history"></span><span>Data Summary</span>&nbsp;&nbsp;&nbsp;
+						<small>from {{ startTime }} to {{ endTime }}</small>
+					</h3>
+
+				</div>
+				<div class="content">
+					<table class="table">
+						<thead>
+							<th>#</th>
+							<th>Server</th>
+							<th>Cluster</th>
+							<th>Down</th>
+							<th>Workload</th>
+							<th>CPU</th>
+							<th>Memory</th>
+							<th>Disk</th>
+							<th>Network In/Out</th>
+							<th>Alert Count</th>
+							<th>Stat Count</th>
+						</thead>
+						<tbody>
+							{% for server in summaryData.items %}
+
+							{% if forloop.counter|divisibleby:2 %}
+							<tr>
+								{% else %}
+							<tr>
+								{% endif %}
+
+								<td>{{ forloop.counter }}</td>
+								<td><a href="/serverTextView?grid={{server.gridName}}&cluster={{server.clusterName}}&server={{server.name}}">{{ server.name }}</a></td>
+								<td>{{ server.clusterName }}</td>
+								<td><span class="icon16 brocco-icon-warning red"></span>{{ server.working }}</td>
+								<td>{{ server.workload.rawData}}</td>
+								<td>{{ server.cpu.rawData}}</td>
+								<td>{{ server.memory.rawData}}</td>
+								<td>{{ server.disk.rawData}}</td>
+								<td>{{ server.networkIn.rawData }} / {{ server.networkOut.rawData }}</td>
+								<td>{{ server.abnormalAlertCount }}</td>
+								<td>{{ server.abnormalStatCount }}</td>
+							</tr>
+
+							{% endfor %}
+
+						</tbody>
+					</table>
+				</div>
+
+			</div>
+		</div>
+
+	</div>
+
+</div>
+
+
+{% endblock %}

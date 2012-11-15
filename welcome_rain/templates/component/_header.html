@@ -1,0 +1,125 @@
+<div class="navbarTop">
+	<div class="navbar-inners">
+		<div class="span12">
+			<div class="title">
+				<h1>SQIT</h1>
+				<!--
+					<p>Service Quality Improvement Tool For DevOps</p>
+				-->
+			</div>
+			<div class="menu">
+				<a href="/accounts/logout" class="btn btn-link btn-mini white"><span class="icon16 icomoon-icon-exit white"></span> Logout</a>				
+				<a href="#" id="setting_menu" class="btn btn-link btn-mini white"><span class="icon16 entypo-icon-settings white"></span>Setting</a>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="navbarMenu">
+	<div class="navbar-inners">
+
+		<div class="span12">
+			<div class="btn-group">
+				<a href="/" class="btn btn-link white"><span class="icon16 icomoon-icon-dashboard white"></span>Dashboard</a>
+				<a href="/summary" class="btn btn-link white"><span class="icon16 icomoon-icon-dashboard white"></span>Summary View</a>
+				<a href="/present" class="btn btn-link white"><span class="icon16 iconic-icon-image white"></span>Present</a>
+				<a href="/chart" class="btn btn-link white"><span class="icon16 iconic-icon-lightbulb white"></span>Realtime Chart</a>
+				
+				<a href="/server" class="btn btn-link white"><span class="icon16 wpzoom-server white"></span>Server</a>
+				<a href="/event" id="events" class="btn btn-link white"><span class="icon16 entypo-icon-history white"></span>Events</a>
+				<a href="/alerts" class="btn btn-link white"><span class="icon16 cut-icon-alert white"></span>Alerts</a>
+
+				<div class="search">
+					<form id="searchform" action="">
+						<input type="text" id="search_input" class="top-search text" placeholder="type server ip">
+						<input type="submit" id="search_button" class="search-btn nostyle" value>
+					</form>				
+				</div>
+
+			</div>
+		</div>
+	</div>
+</div>
+
+<!--
+<div class="navbar">
+	<div class="navbar-inner">
+
+		<div class="span5">
+			<div class="btn-group">
+				<a href="/" class="btn btn-large btn-inverse"><span class="icon16 icomoon-icon-dashboard white"></span>Dash</a>
+				<a href="/present" class="btn btn-large btn-inverse"><span class="icon16 iconic-icon-image white"></span>Present</a>
+				<a href="/chart" class="btn btn-large btn-inverse"><span class="icon16 iconic-icon-lightbulb white"></span>Insight</a>
+				<a href="/server" class="btn btn-large btn-inverse"><span class="icon16 wpzoom-server white"></span>Server</a>
+			</div>
+		</div>
+
+		<div class="span2">
+			<a class="brand" href="/">VALKIS<span class="slogan">devops</span></a>
+		</div>
+
+		<div class="span5">
+			<ul class="nav pull-right usernav">
+				<li class="dropdown">
+					<a href="#" class="dropdown-toggle avatar" data-toggle="dropdown"> <img src="{{ STATIC_URL }}images/avatar.jpg" alt="" class="image" /> <span class="txt">admin@supr.com</span> <b class="caret"></b> </a>
+					<ul class="dropdown-menu">
+						<li class="menu">
+							<ul>
+								<li>
+									<a href="#"><span class="icon16 icomoon-icon-user-3"></span>Edit profile</a>
+								</li>
+								<li>
+									<a href="/accounts/logout"><span class="icon16 icomoon-icon-exit"></span>Logout</a>
+								</li>
+								<li>
+									<a href="#"><span class="icon16 entypo-icon-contact"></span>Add user</a>
+								</li>
+							</ul>
+						</li>
+					</ul>
+				</li>
+				<li>
+					<a href="/event" id="events"><span class="icon16 entypo-icon-history"></span>Events</a>
+				</li>
+				<li>
+					<a href="/alerts"><span class="icon16 cut-icon-alert"></span>Alerts</a>
+				</li>
+				<li>
+					<a href="#" id="setting_menu"><span class="icon16 entypo-icon-settings"></span>Setting</a>
+				</li>
+
+			</ul>
+		</div>
+	</div>
+</div>
+
+-->
+	
+<script type="text/javascript" >
+	$('#setting_menu').click(function() {
+		//window.open('/setting','setting','width=900,height=900');
+		NewWindow('/setting', 'setting', '900', '900', 'no')
+	})
+	var win = null;
+	function NewWindow(mypage, myname, w, h, scroll) {
+		LeftPosition = (screen.width) ? (screen.width - w) / 2 : 0;
+		TopPosition = (screen.height) ? (screen.height - h) / 2 : 0;
+		settings = 'height=' + h + ',width=' + w + ',top=' + TopPosition + ',left=' + LeftPosition + ','
+		win = window.open(mypage, myname, settings)
+		if (win.window.focus) {
+			win.window.focus();
+		}
+	}
+</script>
+<!--
+<div class="navbar">
+<div class="navbar-inner">
+<div class="container-fluid">
+<div class="nav-no-collapse">
+
+</div>
+</div>
+</div>
+</div>
+
+-->

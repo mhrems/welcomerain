@@ -1,0 +1,397 @@
+{% extends "component/_dashboardLayout.html" %}
+
+{% block content %}
+<link href="/static/datetime/jquery-ui-timepicker-addon.css" rel="stylesheet" />
+<script type="text/javascript" src="/static/datetime/jquery-ui-sliderAccess.js"></script>
+<script type="text/javascript" src="/static/datetime/jquery-ui-timepicker-addon.js"></script>
+
+<script type='text/javascript' src='/static/js/plugins/mhr/dateformat.js'></script>
+
+<div class="pageWrapper">
+	<div class="row-fluid">
+
+		<div class="span4">
+			<div class="box gradient">
+				<div class="title">
+					<h3 class="borderBottom clearfix">
+						<span class="left">Events</span>
+						<div class="right" id="sub_menu">
+							<a href="#addEvent" id="addEventMenu" class="btn btn-mini" data-toggle="modal">Add Event</a>
+							<a href="#" id="delteEventBtn" type="delete" class="btn btn-mini" data-toggle="modal">Delete Event</a>
+							<a href="#" style="display:none" id="deleteEvent" class="btn btn-mini" type="delete">Done</a>
+							&nbsp;
+						</div>
+					</h3>
+					
+				</div>
+				<div class="content">
+					<div class="external-events" id="eventsList">
+			
+					</div>
+
+				</div>
+			</div>
+		</div>
+
+		<div class="span8">
+
+			<div class="box calendar">
+
+				<div class="title">
+
+					<h3 class="borderBottom">
+						<span class="icon16 brocco-icon-calendar"></span><span>Calendar</span>
+					</h3>
+					<!-- <a href="#" class="minimize">Minimize</a> -->
+				</div>
+				<div class="content noPad">
+					<div id="calendar-events"></div>
+				</div>
+
+			</div><!-- End .box -->
+		</div>
+
+	</div>
+</div>
+
+
+<div id="addEvent" class="modal hide fade" style="display: none; ">
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal">
+			<span class="icon12 minia-icon-close"></span>
+		</button>
+		<h3>Add Event</h3>
+	</div>
+	<div class="modal-body">
+		<div class="paddingT15 paddingB15">
+			<form class="form-horizontal" id="add_server_form" action="#">
+				<div class="form-row row-fluid">
+					<div class="span12">
+						<div class="row-fluid">
+							<label class="form-label span4" for="normal">Title</label>
+							<input class="span8" value="event" name="title" id="title" type="text" />
+						</div>
+					</div>
+				</div>
+				<div class="form-row row-fluid">
+					<div class="span12">
+						<div class="row-fluid">
+							<label class="form-label span4" for="normal">Date Time</label>
+							<input class="span8" value="" name="eventDateTime" id="eventDateTime" type="text" />
+						</div>
+					</div>
+				</div>
+				<div class="form-row row-fluid">
+					<div class="span12">
+						<div class="row-fluid">
+							<label class="form-label span4" for="checkboxes">Type</label>
+							<div class="span8 controls">   
+                            	<select name="eventType" id="eventType">
+                           			<option selected="selected" value="0">fixd</option>
+                                    <option value="1" >add</option>
+                                    <option value="2" >config</option>
+                                    <option value="3" >hardware</option>
+                                    <option value="4" >promotion</option>
+                                    <option value="5" >etc</option>
+                            	</select>
+                            </div>
+						</div>
+					</div>
+				</div>
+				<div class="form-row row-fluid">
+					<div class="span12">
+						<div class="row-fluid">
+							<label class="form-label span4" for="normal">Detail</label>
+							<input class="span8" value="" name="detail" id="detail" type="text" />
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+	<div class="modal-footer">
+		<a href="#" class="btn" data-dismiss="modal">Close</a>
+		<a href="#" class="btn btn-primary" id="save_add_event_btn">Add</a>
+	</div>
+
+</div>
+
+
+<link href="{{ STATIC_URL }}js/plugins/fullcalendar/fullcalendar.css" rel="stylesheet" type="text/css" />
+
+<script type="text/javascript" src="{{ STATIC_URL }}js/plugins/fullcalendar/fullcalendar.min.js"></script>
+
+<script>
+
+	$(document).ready(function() {
+		var CeventPageManage = new EventPageManage();
+		
+	});
+	
+	function EventPageManage() {
+		this.EventObjects = new Array();
+		
+		this.setEventObjects = function(events){
+			this.EventObjects = events;
+		}
+		this.getEventObjects = function(events){
+			return this.EventObjects
+		}
+		
+		this.init = function(){
+			this.addEvent()
+		}
+		this.sendAajx = function(sUrl, oData, callback){
+			var eventPageManage = this;
+			$.ajax({
+				url : sUrl,
+				type : 'POST',
+				dataType : 'json',
+				data : oData,
+				success : function(data) {
+					callback(data, sUrl, oData, eventPageManage);
+				},
+				error : function(jqXHR, textStatus, errorThrown) {
+					console.log(jqXHR)
+					console.log(textStatus)
+					console.log(errorThrown)
+					return false;
+				}
+			});
+		}
+		this.addEvent = function(){
+			var eventPageManage = this;
+			
+			$("#eventDateTime").datetimepicker({
+				dateFormat : "yy-mm-dd",
+				maxDate: new Date(),
+			});
+			$("#eventDateTime").val('2012-10-25 05:02');
+			
+			$("#save_add_event_btn").click(function(){
+				eventPageManage.handleAddEvent();
+			});
+			
+			$('#delteEventBtn').click(function(){
+				eventPageManage.deleteEventMenuProcess();
+				//$("#deleteEvent").show();
+			})
+			
+			$("#deleteEvent").click(function(){
+				eventPageManage.handleDeleteEvent();
+			});
+			
+			this.handleCalendarEvent();
+		}
+		this.resetDeleteEventMenu = function() {
+			var oDeleteEvent = $("#delteEventBtn");
+			var oDeleteEventAction = $("#deleteEvent");
+
+			oDeleteEvent.attr("type", "delete");
+			oDeleteEvent.html("DeleteEvent");
+			oDeleteEventAction.hide();
+			$(".event_check").hide();
+		}
+		this.deleteEventMenuProcess = function() {
+			var oDeleteEvent = $("#delteEventBtn");
+			var oDeleteEventAction = $("#deleteEvent");
+
+			var type = oDeleteEvent.attr("type");
+			if (type == 'delete') {
+				oDeleteEvent.attr("type", "cancel");
+				oDeleteEvent.html("Cancel");
+				oDeleteEventAction.show();
+				$(".event_check").show();
+			} else {
+				oDeleteEvent.attr("type", "delete");
+				oDeleteEvent.html("DeleteEvent");
+				oDeleteEventAction.hide();
+				$(".event_check").hide();
+			}
+		}
+		this.handleDeleteEvent = function(){
+			var event_id_list = this.getEventIdListFromCheckBox();
+			
+			if (event_id_list==''){
+				alert ("do not check!!!");
+			}
+			else{
+				oApiData = {
+					event_id : event_id_list
+				}
+				
+				this.sendAajx('/api/deleteEvent/', oApiData, this.handleDeleteEventCallback);
+			}
+		}
+		this.handleDeleteEventCallback = function(oResponse, sUrl, oData, eventPageManage) {
+			if (oResponse.status.code == 2000){
+				eventPageManage.deleteEventSuccess(oResponse,oData);
+			}
+			else{
+				alert(" faile !!!"); 
+			}
+		}
+		this.getEventIdListFromCheckBox = function() {
+			var check_obj = $("input[name='event_check_box']:checked");
+			var event_id_list = "";
+			for (var index = 0; index < check_obj.length; index++) {
+				event_id_list = event_id_list + $(check_obj[index]).val()
+				if (!(index == check_obj.length - 1))
+					event_id_list = event_id_list + ',';
+			}
+			return event_id_list;
+		}
+		this.deleteEventSuccess = function(oResponse,oData){
+			var events = this.getEventObjects();
+			var event_id_list = oData.event_id.split(',');
+			var new_events_object = new Array();
+			for (var index_a = 0 ; index_a < events.length ; index_a++){
+				var push_flug = true;
+				var event = events[index_a];
+				var eventId = event.id;
+				for (var index_b = 0 ; index_b < event_id_list.length ; index_b++){
+					if (event_id_list[index_b] == eventId){
+						var push_flug = false;
+						event_id_list.splice(index_b,1);
+					}
+				}
+				if (push_flug) new_events_object.push(event);
+					
+			}
+			this.setEventObjects(new_events_object);
+			this.createEventCalendar(new_events_object);
+			this.createEventList(new_events_object);
+			this.resetDeleteEventMenu();
+		}
+		this.handleAddEvent = function(){
+			oApiData = {
+				eventDateTime : $("#eventDateTime").val(),
+				title : $("#title").val(),
+				detail : $("#detail").val(),
+				eventType : $("#eventType").val()
+			}
+				
+			this.sendAajx('/api/addEvent/', oApiData, this.handleAddEventCallback);
+		}
+		this.handleAddEventCallback = function(oResponse, sUrl, oData, eventPageManage){
+			if (oResponse.status.code == 2000){
+				eventPageManage.addEventSuccess(oResponse,oData);
+			}
+			else{
+				alert(" faile !!!"); 
+			}
+		}
+		this.addEventSuccess = function(oResponse,oData){
+			$("#addEvent").modal('hide');
+			var eventData = this.getEventObject(oResponse.data.event_id,oData.title,oData.eventDateTime);
+			var html = this.eventHtml(eventData);
+			$("#eventsList").append(html);
+			var events = this.getEventObjects();
+			events.push(eventData);
+			
+			this.createEventList(events);
+			this.createEventCalendar(events);
+		}
+		this.handleCalendarEvent = function(){
+			var events = this.createEventsObject();
+			this.setEventObjects(events);
+			this.createEventCalendar(events);
+			this.createEventList(events);
+		}
+		this.createEventsObject = function(){
+			var events = new Array()
+			{% for event_data in events %}
+				//var dateData = this.getDateDataForEvent("{{event_data.eventDateTime|date:'Y-m-d H:i'}}")
+				var event = this.getEventObject('{{event_data.id}}','{{event_data.title}}',"{{event_data.eventDateTime|date:'Y-m-d H:i'}}");
+				events.push(event);
+			{% endfor %}
+			//console.log(events);
+			return events;
+		}
+		this.getEventObject = function(id,title,date){
+			var dateData = this.getDateDataForEvent(date);
+			return {
+				id : id,
+				title : title,
+				allDay : false,
+				displayDate : dateData.displayDate,
+				start : dateData.date,
+				year : dateData.year,
+				month : dateData.month
+			}
+		}
+		this.getDateDataForEvent = function(d_datetime){
+			var date_val = d_datetime.split(' ')[0].split('-');
+			var time_val = d_datetime.split(' ')[1].split(':');
+			
+			var date = new Date(date_val[0], date_val[1]-1, date_val[2], time_val[0], time_val[1]);
+			var year = date_val[0]*1;
+			var month = date_val[1]-1;
+			
+			return {
+				displayDate : d_datetime,
+				date : date,
+				year : year,
+				month : month
+			}
+		}
+		this.createEventCalendar = function(events){
+			$('#calendar-events').html(' ');
+			$('#calendar-events').fullCalendar({
+				header : {
+					left : 'title,today',
+					center : 'prev,next',
+					right : ''
+				},
+				buttonText : {
+					prev : '<span class="icon24 icomoon-icon-arrow-left"></span>',
+					next : '<span class="icon24 icomoon-icon-arrow-right"></span>'
+				},
+				editable : false,
+				events : events,
+				droppable : false, // this allows things to be dropped onto the calendar !!!
+				drop : function(date, allDay) {// this function is called when something is dropped
+		
+				}
+				
+			});
+		}
+		this.createEventList = function(events){
+			var eventPageManage = this;
+			var html = this.getEventListHtml(events);
+			$("#eventsList").html(html);
+			
+			$(".external-event").click(function(){
+				$('#calendar-events').fullCalendar('gotoDate',$(this).attr('year'),$(this).attr('month'));
+			});
+			this.resetDeleteEventMenu();
+		}
+		this.getEventListHtml = function(events){
+			var html = '';
+			for (var index = 0; index < events.length ; index++){
+				var eventData = events[index];
+				html += this.eventHtml(eventData);
+			}
+			return html;
+		}
+		this.eventHtml = function(eventData){
+			
+			var html = '';
+			html += '<div class="external-event" id="'+eventData.id+'" year="'+eventData.year+'" month="'+eventData.month+'">';
+			html += '<input style="display:none" class="event_check" type="checkbox"name="event_check_box" value="'+eventData.id+'"/>';
+			html += eventData.displayDate + ' , ' +  eventData.title;
+			html += '</div>';
+			
+			return html
+		}
+		this.init();
+	}
+	
+
+	$('#external-events div.external-event').each(function() {
+		console.log(1);
+	});
+	
+</script>
+
+{% endblock %}

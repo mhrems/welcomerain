@@ -1,0 +1,1108 @@
+{% extends "component/_baseLayout.html" %}
+
+{% block content %}
+
+<div class="pageWrapper">
+
+	<div class="page-header">
+
+		<h4 class="clearfix">
+			<span class="icon16 icomoon-icon-loop"></span>
+			<span>Server</span>
+
+			<div class="right" id="main_menu">
+				<a href="#addServer" id="addServerMenu" class="btn btn-mini" data-toggle="modal">AddServer</a>
+				<a href="#editServer" id="editServerMenu" class="btn btn-mini" data-toggle="modal">EditServer</a>
+				<a href="#" id="deleteServerMenu" class="btn btn-mini" type="delete">DeleteServer</a>
+				<a href="#" id="gmondInstallMenu" class="btn btn-mini" type="gmond">Gmond</a>
+				<a href="#" id="pluginInstallMenu" class="btn btn-mini" type="plugin">Plugin</a>
+			</div>
+
+			<div class="right" id="sub_menu">
+	
+				<a href="#" id="deleteServerAction" class="btn btn-mini">Done</a>
+				<a href="#" id="gmondInstallAction" class="btn btn-mini">Install</a>
+				<a href="#pluginInstall" id="pluginInstallAction" class="btn btn-mini" data-toggle="modal">Install</a>
+	
+			</div>
+		</h4>
+
+	</div><!-- End .heading-->
+
+	<!-- Build page from here: -->
+	<div class="row-fluid">
+		<div id="container">
+			
+		</div>
+	</div><!-- End .row-fluid -->
+</div>
+
+<div id="addServer" class="modal hide fade" style="display: none; ">
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal">
+			<span class="icon12 minia-icon-close"></span>
+		</button>
+		<h3>Add Server</h3>
+	</div>
+	<div class="modal-body">
+		<div class="paddingT15 paddingB15">
+			<form class="form-horizontal" id="add_server_form" action="#">
+				<div class="form-row row-fluid">
+					<div class="span12">
+						<div class="row-fluid">
+							<label class="form-label span4" for="normal">IP</label>
+							<input class="span8" value="192.168.0." name="server_ip" id="server_ip" type="text" />
+						</div>
+					</div>
+				</div>
+				<div class="form-row row-fluid">
+					<div class="span12">
+						<div class="row-fluid">
+							<label class="form-label span4" for="normal">Server User ID</label>
+							<input class="span8" value="root" name="server_userid" id="server_userid" type="text" />
+						</div>
+					</div>
+				</div>
+				<div class="form-row row-fluid">
+					<div class="span12">
+						<div class="row-fluid">
+							<label class="form-label span4" for="normal">Server User Pass</label>
+							<input class="span8" value="mhrinc" name="server_userpass" id="server_userpass" type="text" />
+						</div>
+					</div>
+				</div>
+				<div class="form-row row-fluid">
+					<div class="span12">
+						<div class="row-fluid">
+							<label class="form-label span4" for="normal">Description</label>
+							<input class="span8" value="description" name="description" id="description" type="text" />
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+	<div class="modal-footer">
+		<a href="#" class="btn" data-dismiss="modal">Close</a>
+		<a href="#" class="btn btn-primary" id="save_add_server_btn">Add</a>
+	</div>
+
+</div>
+
+<div id="editServer" class="modal hide fade" style="display: none; ">
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal">
+			<span class="icon12 minia-icon-close"></span>
+		</button>
+		<h3>Edit Server</h3>
+	</div>
+	<div class="modal-body">
+		<div class="paddingT15 paddingB15">
+			<form class="form-horizontal" id="add_server_form" action="#">
+				<div class="form-row row-fluid">
+					<div class="span12">
+						<div class="row-fluid">
+							<label class="form-label span4" for="normal">ID</label>
+							<input class="span8" value="2" name="edit_server_id" id="edit_server_id" type="text" />
+						</div>
+					</div>
+				</div>
+				<div class="form-row row-fluid">
+					<div class="span12">
+						<div class="row-fluid">
+							<label class="form-label span4" for="normal">Server User ID</label>
+							<input class="span8" value="root" name="edit_server_userid" id="edit_server_userid" type="text" />
+						</div>
+					</div>
+				</div>
+				<div class="form-row row-fluid">
+					<div class="span12">
+						<div class="row-fluid">
+							<label class="form-label span4" for="normal">Server User Pass</label>
+							<input class="span8" value="mhrinc" name="edit_server_userpass" id="edit_server_userpass" type="text" />
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+	<div class="modal-footer">
+		<a href="#" class="btn" data-dismiss="modal">Close</a>
+		<a href="#" class="btn btn-primary" id="save_edit_server_btn">Edit</a>
+	</div>
+
+</div>
+
+<div id="pluginInstall" class="modal hide fade" style="display: none; ">
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal">
+			<span class="icon12 minia-icon-close"></span>
+		</button>
+		<h3>Plugin Install</h3>
+	</div>
+	<div class="modal-body">
+		<div class="paddingT15 paddingB15">
+			<table>
+				<tr>
+					<td><div id="plugin_server_part"></div></td>
+					<td><div id="plugin_plugin_part"></div></td>
+				</tr>
+			</table>
+		</div>
+	</div>
+	<div class="modal-footer">
+		<a href="#" class="btn" data-dismiss="modal">Close</a>
+		<a href="#" class="btn btn-primary" id="plugin_install_btn">Install</a>
+	</div>
+
+</div>
+
+<div id="progress" class="modal hide fade" style="display: none; ">
+	<div class="modal-header">
+		<h3>Installing...</h3>
+	</div>
+	<div class="modal-body">
+		<div class="paddingT15 paddingB15">
+			<div class="progress tip">
+				<div class="bar" id="progress_bar" style="width: 0%;"></div>
+			</div>
+		</div>
+	</div>
+	<div class="modal-footer">
+		<a href="#" class="btn btn-primary" id="progress_done_btn" >Done</a>
+	</div>
+</div>
+
+<script type="text/javascript">
+	var INSTALL_SERVER_VIEW = 0;
+	var UN_INSTALL_SERVER_VIEW = 2;
+	var SERVER_DETAIL = 3;
+	var CserverGruopPage = new ServerPageManage();
+	var FIRST_API_DATA = 'group_type!*1'
+	$(document).ready(function() {
+		handlerTreeMenuEvent(GET_SERVER_GROUP_LIST,FIRST_API_DATA);
+	});
+
+	function ServerPageManage() {
+
+		this.debug = true;
+		this.response = null;
+		this.currentView = '6';
+		this.apiUrl = null;
+		this.apiData = null;
+		this.apiCallback = null
+		this.servers = null;
+
+		this.htmlPageIds = {
+			mainPage : '#container',
+
+			// menu
+			addServerMenu : '#addServerMenu',
+			deleteServerMenu : '#deleteServerMenu',
+			editServerMenu : '#editServerMenu',
+			gmondInstallMenu : '#gmondInstallMenu',
+			pluginInstallMenu : '#pluginInstallMenu',
+
+			deleteServerAction : '#deleteServerAction',
+			gmondInstallAction : '#gmondInstallAction',
+			pluginInstallAction : '#pluginInstallAction',
+			// menu btn
+			save_add_server_btn : '#save_add_server_btn',
+			save_edit_server_btn : '#save_edit_server_btn',
+			plugin_install_btn : '#plugin_install_btn',
+			server_id_list_for_plugin : '#server_id_list_for_plugin',
+			progress_done_btn : "#progress_done_btn",
+			//form
+			editServer : '#editServer',
+			edit_server_id : '#edit_server_id',
+			edit_server_userid : '#edit_server_userid',
+			edit_server_userpass : '#edit_server_userpass',
+
+			addServer : '#addServer',
+			server_ip : '#server_ip',
+			server_userid : '#server_userid',
+			server_userpass : '#server_userpass',
+			description : '#description',
+
+			pluginInstall : '#pluginInstall',
+
+			progress : '#progress',
+			progress_bar : '#progress_bar'
+		}
+		this.htmlPageClasses = {
+			pageBtn : '.page_btn',
+			servercheck_body : '.servercheck_body'
+		}
+
+		this.setServerPageData = function(oResponse, currentView, apiUrl, apiData, apiCallback) {
+			this.response = oResponse;
+			this.currentView = currentView;
+			this.apiUrl = apiUrl;
+			this.apiData = apiData;
+			this.apiCallback = apiCallback
+		}
+
+		this.refreshCurrentPage = function() {
+			this.logMessage("refreshCurrentPage");
+			console.log(this.apiUrl);
+			console.log(this.apiData);
+			sendAajx(this.apiUrl, this.apiData, this.apiCallback);
+		}
+
+		this.manageCntentMenu = function() {
+
+			var oAddServer = $(this.htmlPageIds.addServerMenu);
+			var oDeleteServer = $(this.htmlPageIds.deleteServerMenu);
+			var oEditServer = $(this.htmlPageIds.editServerMenu);
+			var oGmondInstall = $(this.htmlPageIds.gmondInstallMenu);
+			var oPluginInstall = $(this.htmlPageIds.pluginInstallMenu);
+
+			oAddServer.hide();
+			oDeleteServer.hide();
+			oEditServer.hide();
+			oGmondInstall.hide();
+			oPluginInstall.hide();
+			this.hideCheckBox();
+
+			/*
+			 var oDeleteServerAction = $(this.htmlPageIds.deleteServerAction);
+			 var oGmondInstallAction = $(this.htmlPageIds.gmondInstallAction);
+			 var oPluginInstallAction = $(this.htmlPageIds.pluginInstallAction);
+			 oDeleteServerAction.hide();
+			 oGmondInstallAction.hide();
+			 oPluginInstallAction.hide();
+			 */
+			if (this.currentView == INSTALL_SERVER_VIEW) {
+				//oAddServer.show();
+				oDeleteServer.show();
+				oPluginInstall.show();
+			} else if (this.currentView == UN_INSTALL_SERVER_VIEW) {
+				oAddServer.show();
+				oDeleteServer.show();
+				oGmondInstall.show();
+			} else if (this.currentView == SERVER_DETAIL) {
+				oDeleteServer.show();
+				oEditServer.show();
+			} else {
+				//console.log(this.currentView);
+			}
+			this.resetDeleteServerMenu()
+			this.resetGmondInstallMenu()
+			this.resetPluginInstallMenu()
+		}
+		this.resetDeleteServerMenu = function() {
+			var oDeleteServer = $(this.htmlPageIds.deleteServerMenu);
+			var oDeleteServerAction = $(this.htmlPageIds.deleteServerAction);
+
+			oDeleteServer.attr("type", "delete");
+			oDeleteServer.html("DeleteServer");
+			oDeleteServerAction.hide();
+		}
+
+		this.deleteServerMenuProcess = function() {
+			this.logMessage("deleteServerMenuProcess");
+			var oDeleteServer = $(this.htmlPageIds.deleteServerMenu);
+			var oDeleteServerAction = $(this.htmlPageIds.deleteServerAction);
+
+			var type = oDeleteServer.attr("type");
+			if (type == 'delete') {
+				oDeleteServer.attr("type", "cancel");
+				oDeleteServer.html("Cancel");
+				oDeleteServerAction.show();
+				this.showCheckBox();
+			} else {
+				oDeleteServer.attr("type", "delete");
+				oDeleteServer.html("DeleteServer");
+				oDeleteServerAction.hide();
+				this.hideCheckBox();
+			}
+		}
+
+		this.resetGmondInstallMenu = function() {
+			var oGmondInstall = $(this.htmlPageIds.gmondInstallMenu);
+			var oGmondInstallAction = $(this.htmlPageIds.gmondInstallAction);
+
+			oGmondInstall.attr("type", "install");
+			oGmondInstall.html("Gmond");
+			oGmondInstallAction.hide();
+		}
+
+		this.gmondInstallMenuProcess = function() {
+			var oGmondInstall = $(this.htmlPageIds.gmondInstallMenu);
+			var oGmondInstallAction = $(this.htmlPageIds.gmondInstallAction);
+
+			var type = oGmondInstall.attr("type");
+			if (type == 'install') {
+				oGmondInstall.attr("type", "cancel");
+				oGmondInstall.html("Cancel");
+				oGmondInstallAction.show();
+				this.showCheckBox();
+			} else {
+				oGmondInstall.attr("type", "install");
+				oGmondInstall.html("Gmond");
+				oGmondInstallAction.hide();
+				this.hideCheckBox();
+			}
+		}
+
+		this.pluginInstallMenuProcess = function() {
+			var oPluginInstall = $(this.htmlPageIds.pluginInstallMenu);
+			var oPluginInstallAction = $(this.htmlPageIds.pluginInstallAction);
+			var type = oPluginInstall.attr("type");
+
+			if (type == 'install') {
+				oPluginInstall.attr("type", "cancel");
+				oPluginInstall.html("Cancel");
+				oPluginInstallAction.show();
+				this.showCheckBox();
+			} else {
+				oPluginInstall.attr("type", "install");
+				oPluginInstall.html("Plugin");
+				oPluginInstallAction.hide();
+				this.hideCheckBox();
+			}
+		}
+		this.resetPluginInstallMenu = function() {
+			var oPluginInstall = $(this.htmlPageIds.pluginInstallMenu);
+			var oPluginInstallAction = $(this.htmlPageIds.pluginInstallAction);
+
+			oPluginInstall.attr("type", "install");
+			oPluginInstall.html("Plugin");
+			oPluginInstallAction.hide();
+		}
+		this.logMessage = function(sMessage) {
+			if (this.debug)
+				console.log(sMessage)
+		}
+
+		this.clearMainHtml = function() {
+			$(this.htmlPageIds.mainPage).html("");
+		}
+		this.appendMainHtml = function(html) {
+			$(this.htmlPageIds.mainPage).append(html);
+		}
+		this.creatServerObject = function() {
+			this.logMessage("creatServerObject");
+			//console.log(this.servers);
+			var oServers = new Array();
+			for (var index = 0; index < this.response.data.length; index++) {
+				var oServer = new Object();
+				oServer.id = this.response.data[index].pk;
+				oServer.ip = this.response.data[index].fields.ip;
+				oServer.gmond_install_flag = this.response.data[index].fields.gmond_install_flag;
+				oServer.plugin_lists = this.response.data[index].fields.plugin_lists;
+				oServer.server_userid = this.response.data[index].fields.server_userid;
+				oServer.server_password = this.response.data[index].fields.server_password;
+				oServer.server_version = this.response.data[index].fields.server_version;
+
+				oServers.push(oServer);
+			}
+			this.servers = oServers;
+		}
+
+		this.init = function() {
+			this.manageCntentMenu();
+			this.addMenuEvent()
+		}
+		/*
+		*
+		* 	menu event
+		*
+		*/
+
+		// menu btn
+
+		this.addMenuEvent = function() {
+			this.logMessage("addMenuEvent");
+			var serverPageManage = this;
+			$(this.htmlPageIds.save_add_server_btn).click(function() {
+				serverPageManage.handlerAddServer();
+			});
+
+			$(this.htmlPageIds.save_edit_server_btn).click(function() {
+				serverPageManage.handlerEditServer();
+			});
+
+			$(this.htmlPageIds.deleteServerMenu).click(function() {
+				if (serverPageManage.currentView == SERVER_DETAIL)
+					serverPageManage.handlerDeleteServerDetail();
+				else
+					serverPageManage.deleteServerMenuProcess();
+			});
+			$(this.htmlPageIds.deleteServerAction).click(function() {
+				serverPageManage.handlerDeleteGroupList();
+			});
+			$(this.htmlPageIds.gmondInstallMenu).click(function() {
+				serverPageManage.gmondInstallMenuProcess();
+			});
+			$(this.htmlPageIds.gmondInstallAction).click(function() {
+				serverPageManage.handlerGmondInstall();
+			});
+			$(this.htmlPageIds.pluginInstallMenu).click(function() {
+				serverPageManage.pluginInstallMenuProcess();
+			});
+			$(this.htmlPageIds.pluginInstallAction).click(function() {
+				serverPageManage.handlerPluginInstall();
+			});
+
+			$(this.htmlPageIds.plugin_install_btn).click(function() {
+				serverPageManage.handlerPluginInstallBtn();
+			});
+
+			$(this.htmlPageIds.progress_done_btn).click(function() {
+				serverPageManage.handlerProgressDoneBtn();
+			})
+		}
+
+		this.handlerPluginInstallBtn = function() {
+			this.logMessage("getAvailablePluginList");
+			var check_obj = $("input[name='plugincheckbox']:checked");
+			var plugin_id_list = "";
+			for (var index = 0; index < check_obj.length; index++) {
+				plugin_id_list = plugin_id_list + $(check_obj[index]).val()
+				if (!(index == check_obj.length - 1))
+					plugin_id_list = plugin_id_list + ',';
+			}
+
+			var server_id_list = this.getServerIdListFromCheckBox();
+			oApiData = {
+				server_id : $(this.htmlPageIds.server_id_list_for_plugin).val(),
+				task_type : INSTALL_PLUGIN_TASK,
+				task_data : plugin_id_list,
+			}
+
+			$(this.htmlPageIds.pluginInstall).modal('hide');
+			this.showProgress();
+			sendAajx('/api/newTask/', oApiData, this.handlerNewTaskCallback);
+		}
+
+		this.getAvailablePluginList = function() {
+			this.logMessage("getAvailablePluginList");
+			sendAajx('/api/getAvailablePluginList/', {}, this.getAvailablePluginListCallback);
+		}
+
+		this.getAvailablePluginListCallback = function(oResponse, apiUrl, apiData) {
+			CserverGruopPage.logMessage("getAvailablePluginListCallback");
+			var html = '';
+			html += '<table>';
+			for (var index = 0; index < oResponse.data.length; index++) {
+				html += '<tr>';
+				html += '<td class="chChildren servercheck_body">';
+				html += '<input type="checkbox"';
+				html += 'name="plugincheckbox" value="' + oResponse.data[index].pk + '"';
+				html += 'class="styled plugincheck_val"/></td>';
+				html += '<td>' + oResponse.data[index].fields.plugin_name + '</td>';
+				html += '</tr>';
+			}
+			html += '</table>';
+			console.log(html)
+			$("#plugin_plugin_part").html("");
+			$("#plugin_plugin_part").append(html);
+
+		}
+
+		this.handlerPluginInstall = function() {
+			this.logMessage("handlerPluginInstall");
+
+			var oServerId = new Array();
+
+			var check_obj = $("input[name='servercheckbox']:checked");
+			for (var index = 0; index < check_obj.length; index++) {
+				oServerId.push($(check_obj[index]).attr("ip"));
+			}
+
+			var server_id_list = this.getServerIdListFromCheckBox();
+
+			var html = '';
+			html += '<input type="hidden" id="server_id_list_for_plugin" value="' + server_id_list + '">';
+			html += '<ul>';
+			for (var index = 0; index < oServerId.length; index++) {
+				html += '<li>' + oServerId[index] + '</li>';
+			}
+
+			html += '</ul>';
+
+			$("#plugin_server_part").html("");
+			$("#plugin_server_part").append(html)
+			this.getAvailablePluginList();
+
+		}
+
+		this.handlerDeleteServerDetail = function() {
+			this.logMessage("handlerDeleteServerDetail");
+
+			var server_id_list = '';
+			for (var index = 0; index < this.servers.length; index++) {
+				server_id_list = server_id_list + this.servers[index].id
+				if (!(index == this.servers.length - 1))
+					server_id_list = server_id_list + ',';
+			}
+			oApiData = {
+				server_id : server_id_list
+			}
+			sendAajx('/api/deleteServer/', oApiData, this.deleteServerCallback);
+
+		}
+		this.deleteServerCallback = function(oResponse, apiUrl, apiData) {
+			CserverGruopPage.logMessage("deleteServerCallback");
+			if (oResponse.status.code == 2000) {
+				for (var index=0;index < apiData.server_id.split(',').length;index++){
+					node = searchNodeByID(apiData.server_id.split(',')[index]);
+					deleteNode(node);
+				}
+
+			} else {
+				alert("fail")
+			}
+		}
+
+		this.handlerGmondInstall = function() {
+			this.logMessage("handlerGmondInstall");
+			var server_id_list = this.getServerIdListFromCheckBox();
+			oApiData = {
+				server_id : server_id_list,
+				task_type : INSTALL_GMOND_TASK,
+				task_data : '',
+			}
+
+			this.showProgress();
+			sendAajx('/api/newTask/', oApiData, this.handlerNewTaskCallback);
+		}
+
+		this.handlerNewTaskCallback = function(oResponse, apiUrl, apiData) {
+			CserverGruopPage.logMessage("deleteGroupListCallback");
+			if (oResponse.status.code == 2000) {
+				CserverGruopPage.setProgressBar(0);
+				CserverGruopPage.handlerTaskStatus(oResponse.data.task_id, -1);
+			} else {
+				alert("fail");
+			}
+		}
+
+		this.handlerDeleteGroupList = function() {
+			this.logMessage("handlerDeleteGroupList");
+
+			var server_id_list = this.getServerIdListFromCheckBox();
+
+			oApiData = {
+				server_id : server_id_list
+			}
+			sendAajx('/api/deleteServer/', oApiData, this.deleteGroupListCallback);
+
+		}
+		this.deleteGroupListCallback = function(oResponse, apiUrl, apiData) {
+			CserverGruopPage.logMessage("deleteGroupListCallback");
+			if (oResponse.status.code == 2000) {
+				for (var index=0;index < apiData.server_id.split(',').length;index++){
+					node = searchNodeByID(apiData.server_id.split(',')[index]);
+					deleteNode(node);
+				}	
+
+				CserverGruopPage.deleteServerMenuProcess();
+				CserverGruopPage.refreshCurrentPage(); 
+			} else {
+				alert("fail")
+			}
+		}
+
+		this.handlerAddServer = function() {
+			this.logMessage("handlerAddServer");
+			oApiData = {
+				server_ip : $(this.htmlPageIds.server_ip).val(),
+				server_userid : $(this.htmlPageIds.server_userid).val(),
+				server_userpass : $(this.htmlPageIds.server_userpass).val(),
+				description : $(this.htmlPageIds.description).val()
+			}
+			sendAajx('/api/addServer/', oApiData, this.addServerCallback);
+		}
+
+		this.addServerCallback = function(oResponse, apiUrl, apiData) {
+			CserverGruopPage.logMessage("addServerCallback");
+			if (oResponse.status.code == 2000) {
+				$(CserverGruopPage.htmlPageIds.addServer).modal('hide');
+				
+				addServerNodeToTree('main_NotInstalled', oResponse.data.server_uid, oResponse.data.server_ip, oResponse.data.apiname,oResponse.data.apidata)
+				//var node1 = searchMenuNodeByID("main_NotInstalled");
+				/*
+				for (var index = 0; index < oResponse.data.length; index++) {
+					html += 'name="plugincheckbox" value="' + oResponse.data[index].pk + '"';
+					html += '<td>' + oResponse.data[index].fields.plugin_name + '</td>';
+					html += '</tr>';
+				}*/
+				
+				CserverGruopPage.refreshCurrentPage();
+			} else {
+				alert("fail")
+			}
+		}
+
+		this.handlerEditServer = function() {
+			this.logMessage("handlerEditServer");
+			oApiData = {
+				server_id : $(this.htmlPageIds.edit_server_id).val(),
+				server_userid : $(this.htmlPageIds.edit_server_userid).val(),
+				server_userpass : $(this.htmlPageIds.edit_server_userpass).val()
+			}
+			sendAajx('/api/editServer/', oApiData, this.editServerCallback);
+		}
+
+		this.editServerCallback = function(oResponse, apiUrl, apiData) {
+			CserverGruopPage.logMessage("editServerCallback");
+			if (oResponse.status.code == 2000) {
+				$(CserverGruopPage.htmlPageIds.editServer).modal('hide');
+				CserverGruopPage.refreshCurrentPage();
+			} else {
+				alert("fail")
+			}
+		}
+
+		this.handlerTaskStatus = function(sTaskId, sStatusId) {
+			//console.log(sTaskId);
+
+			oApiData = {
+				status_id : sStatusId,
+				task_id : sTaskId
+			}
+			sendAajx('/api/queryTaskStatus/', oApiData, this.handlerTaskStatusCallback);
+		}
+		this.handlerTaskStatusCallback = function(oResponse, apiUrl, apiData) {
+			CserverGruopPage.logMessage("handlerTaskStatusCallback");
+			console.log(oResponse)
+			if (oResponse.status.code == 2000) {
+				if (oResponse.data) {
+					var progress_val = oResponse.data[0].fields.progress.split(',')
+					var totalTask = progress_val[0];
+					var complateTask = oResponse.data.length;
+					var progresswitdh = CserverGruopPage.getProgressWidth(totalTask, complateTask);
+					CserverGruopPage.logMessage("totalTask = " + totalTask);
+					CserverGruopPage.logMessage("complateTask = " + complateTask);
+					CserverGruopPage.logMessage("progresswitdh = " + progresswitdh);
+
+					CserverGruopPage.setProgressBar(progresswitdh);
+					if ((complateTask==totalTask)){
+					// 
+						for (var index=0;index < oResponse.data.length;index++){
+console.log(apiData)							
+var main = searchMenuNodeByID("main_Installed");
+							var progress_val = oResponse.data[index].fields.server;
+							var server_id = oResponse.data[index].fields.server;
+							console.log(server_id)
+							var node = searchNodeByID(server_id);
+console.log(node)							
+moveNode(node, main, "inside");
+CserverGruopPage.refreshCurrentPage();
+							//deleteNode(node);
+						}
+					}
+					else{
+						CserverGruopPage.setTimeoutHandlerTaskStatus(apiData.task_id, apiData.status_id);
+}
+
+				} else {
+					CserverGruopPage.setTimeoutHandlerTaskStatus(apiData.task_id, apiData.status_id);
+				}
+
+			} else {
+				this.hideProgress();
+			}
+		}
+		this.setTimeoutHandlerTaskStatus = function(task_id, status_id) {
+			setTimeout(function() {
+				CserverGruopPage.handlerTaskStatus(task_id, status_id);
+			}, 2000);
+		}
+
+		this.hideCheckBox = function() {
+			$(this.htmlPageClasses.servercheck_body).hide()
+		}
+		this.showCheckBox = function() {
+			$(this.htmlPageClasses.servercheck_body).show()
+		}
+
+		this.getServerIdListFromCheckBox = function() {
+			var check_obj = $("input[name='servercheckbox']:checked");
+			var server_id_list = "";
+			for (var index = 0; index < check_obj.length; index++) {
+				server_id_list = server_id_list + $(check_obj[index]).val()
+				if (!(index == check_obj.length - 1))
+					server_id_list = server_id_list + ',';
+			}
+			return server_id_list;
+		}
+		/*
+		 *
+		 *  progress
+		 *
+		 */
+
+		this.showProgress = function() {
+			$(this.htmlPageIds.progress).modal('show');
+		}
+		this.hideProgress = function() {
+			$(this.htmlPageIds.progress).modal('hide');
+		}
+		this.getProgressWidth = function(totalTask, complateTask) {
+			return (complateTask / totalTask) * 100;
+		}
+		this.setProgressBar = function(width) {
+			$(this.htmlPageIds.progress_bar).css('width', width + '%');
+		}
+		this.handlerProgressDoneBtn = function() {
+			CserverGruopPage.logMessage("handlerProgressDoneBtn");
+			this.hideProgress();
+		}
+		/*
+
+		 server group list
+
+		 */
+		this.handlerGetServerGroupList = function() {
+			this.logMessage("handlerGetServerGroupList");
+			this.clearMainHtml();
+			this.creatServerObject();
+			var html = this.getServerGroupListHtml();
+			this.appendMainHtml(html);
+			this.addServerGroupListEvent();
+		}
+		this.getServerGroupListHtml = function() {
+			this.logMessage("getServerGroupListHtml");
+			var html = '<div class="box gradient">';
+			html += '<div class="title">';
+			html += '<h3>Server Group List</h3>';
+			html += '</div>';
+			html += '<div class="content">';			
+			html += '<table class="responsive table">';
+			html += '<thead>';
+			html += '<tr>';
+			html += '<th class="servercheck_body"></th>';
+			html += '<th>ip</th>';
+			html += '<th>gmond_install_flag</th>';
+			html += '<th>status</th>';
+			html += '<th>server_version</th>';
+			html += '</thead>';
+			html += '<tbody>';
+			for (var index = 0; index < this.servers.length; index++) {
+				html += '<tr>';
+				html += '<td class="chChildren servercheck_body">';
+				html += '<input type="checkbox"';
+				html += 'name="servercheckbox" value="' + this.servers[index].id + '"';
+				html += 'class="styled servercheck_val" ip="' + this.servers[index].ip + '"/></td>';
+				html += '<td><a href="#" class="move_detail" id="' + this.servers[index].id + '">' + this.servers[index].ip + '</a></td>';
+				html += '<td>' + this.servers[index].gmond_install_flag + '</td>';
+				html += '<td>status</td>';
+				html += '<td>' + this.servers[index].server_version + '</td>';
+				html += '</tr>';
+			}
+			html += '</tbody>';
+			html += '</table>';
+
+			html += '<ul class="pager">';
+			html += '<li><a href="#" page="' + this.response.extra.page + '" type="pre" class="page_btn">Previous</a></li>';
+			html += '<li><a href="#" page="' + this.response.extra.page + '" type="next" class="page_btn">Next</a></li>';
+			html += '</ul>';
+			html += '</div>';
+			html += '</div>';
+			return html;
+		}
+		this.addServerGroupListEvent = function() {
+			this.logMessage("addServerGroupListEvent");
+			this.manageCntentMenu();
+			this.pageBtnEvent();
+			$(".move_detail").click(function() {
+				oApiData = {
+					server_id : this.id
+				}
+				sendAajx('/api/getServerDetail/', oApiData, getServerDetailCallback);
+			})
+			//this.hideCheckBox();
+		}
+		this.pageBtnEvent = function() {
+			this.logMessage("pageBtnEvent");
+			var serverPageManage = this;
+			$(this.htmlPageClasses.pageBtn).click(function() {
+				if (this.type == 'next')
+					serverPageManage.apiData.page = ($(this).attr("page") * 1) + 1;
+				else
+					serverPageManage.apiData.page = ($(this).attr("page") * 1) - 1;
+				serverPageManage.refreshCurrentPage();
+			});
+		}
+		/*
+		 *
+		 *	server detail
+		 *
+		 */
+
+		this.handlerGetServerDetail = function() {
+			this.logMessage("handlerGetServerDetail");
+			this.clearMainHtml();
+			this.creatServerObject();
+			var html = this.getServerDetailHtml();
+			//console.log("html="+html);
+			this.appendMainHtml(html);
+			this.addServerDetailEvent();
+		}
+	                   
+		this.getServerDetailHtml = function() {
+			//console.log("affsadfsaf");
+			var html = '<div class="box">';
+			html += getFormBoxTitle('server detail');
+			html += '   <div class="content">';
+			for (var index = 0; index < this.servers.length; index++) 
+			{
+				html += getFormElement('ip',this.servers[index].ip);
+				html += getFormElement('status','status');
+				html += getFormElement('server_version', this.servers[index].server_version);
+				html += getFormElement('gmond_install_flag',this.servers[index].gmond_install_flag);
+				html += getFormElement('plugin_lists',this.servers[index].plugin_lists);
+				html += getFormElement('server_userid',this.servers[index].server_userid);
+				html += getFormElement('server_password',this.servers[index].server_password);
+			}
+			html += '   </div>';
+			html += '</div>';
+			return html;
+		}
+		
+/*
+		this.getServerDetailHtml = function() {
+			var html = "<h4>server detail</h4>";
+			for (var index = 0; index < this.servers.length; index++) 
+			{
+				html += '<p>ip => ' + this.servers[index].id + '</p>';
+				html += '<p>status => status</p>';
+				html += '<p>server_version => ' + this.servers[index].server_version + '</p>';
+				html += '<p>gmond_install_flag => ' + this.servers[index].gmond_install_flag + '</p>';
+				html += '<p>plugin_lists => ' + this.servers[index].plugin_lists + '</p>';
+				html += '<p>server_userid => ' + this.servers[index].server_userid + '</p>';
+				html += '<p>server_password => ' + this.servers[index].server_password + '</p>';
+			}
+			return html;
+		}
+*/
+		this.addServerDetailEvent = function() {
+			this.logMessage("addServerDetailEvent");
+			this.manageCntentMenu();
+			this.setValueToEditForm();
+		}
+		this.setValueToEditForm = function() {
+			$(this.htmlPageIds.edit_server_id).val(this.servers[0].id);
+			$(this.htmlPageIds.edit_server_userid).val(this.servers[0].server_userid);
+			$(this.htmlPageIds.edit_server_userpass).val(this.servers[0].server_password);
+		}
+		this.init();
+	}
+
+	function handlerTreeMenuEvent(apiName, apiData) {
+		if (apiName == GET_SERVER_DETAIL) {
+			oApiData = createApiDataObject(apiData);
+			sendAajx('/api/getServerDetail/', oApiData, getServerDetailCallback);
+		} else if (apiName == GET_SERVER_GROUP_LIST) {
+			oApiData = createApiDataObject(apiData);
+			sendAajx('/api/getServerGroupList/', oApiData, getServerGroupListCallback);
+		} else {
+			console.log(apiName);
+		}
+	}
+
+	function getServerGroupListCallback(oResponse, apiUrl, apiData) {
+		var currentView = UN_INSTALL_SERVER_VIEW;
+		if (apiData.group_type == 1)
+			currentView = INSTALL_SERVER_VIEW;
+		CserverGruopPage.setServerPageData(oResponse, currentView, apiUrl, apiData, getServerGroupListCallback);
+		CserverGruopPage.handlerGetServerGroupList()
+	}
+
+	function getServerDetailCallback(oResponse, apiUrl, apiData) {
+		var currentView = SERVER_DETAIL;
+		CserverGruopPage.setServerPageData(oResponse, currentView, apiUrl, apiData, getServerDetailCallback);
+		CserverGruopPage.handlerGetServerDetail()
+	}
+
+	/*
+	 $(document).ready(function() {
+	 $("#save_add_server_btn").click(function(){
+	 oApiData = {
+	 server_ip : $("#server_ip").val(),
+	 server_userid : $("#server_userid").val(),
+	 server_userpass : $("#server_userpass").val(),
+	 description : $("#description").val()
+	 }
+	 sendAajx('/api/addServer/',oApiData,addServerCallback);
+	 });
+	 $("#save_edit_server_btn").click(function(){
+	 oApiData = {
+	 server_id : $("#edit_server_id").val(),
+	 server_userid : $("#edit_server_userid").val(),
+	 server_userpass : $("#edit_server_userpass").val()
+	 }
+	 sendAajx('/api/editServer/',oApiData,editServerCallback);
+	 })
+	 manageCntentMenu(1);
+	 });
+
+	 function createServerObject(items){
+
+	 var servers = new Array();
+
+	 var server = new object();
+
+	 }
+
+	 function manageCntentMenu(viewType){
+
+	 var oAddServer = $("#addServerMenu");
+	 var oDeleteServer = $("#deleteServerMenu");
+	 var oEditServer = $("#editServerMenu");
+	 var oGmondInstall = $("#gmondInstallMenu");
+	 var oPluginInstall = $("#pluginInstallMenu");
+
+	 oAddServer.hide();
+	 oDeleteServer.hide();
+	 oEditServer.hide();
+	 oGmondInstall.hide();
+	 oPluginInstall.hide();
+
+	 if(viewType==INSTALL_SERVER_VIEW){
+	 oAddServer.show();
+	 oDeleteServer.show();
+	 oPluginInstall.show();
+	 }
+	 else if(viewType==UN_INSTALL_SERVER_VIEW){
+	 oAddServer.show();
+	 oDeleteServer.show();
+	 oGmondInstall.show();
+	 }
+	 else if(viewType==SERVER_DETAIL){
+	 oDeleteServer.show();
+	 oEditServer.show();
+	 }
+	 else{
+	 console.log(viewType);
+	 }
+	 }
+
+	 function addServerCallback(oResponse,apiUrl,apiData){
+	 if(oResponse.status.code==2000){
+	 $('#addServer').modal('hide');
+	 }else{
+	 alert("fail")
+	 }
+	 }
+	 function editServerCallback(oResponse,apiUrl,apiData){
+	 if(oResponse.status.code==2000){
+	 $('#editServer').modal('hide');
+	 }else{
+	 alert("fail")
+	 }
+	 }
+
+	 function handlerTreeMenuEvent(apiName,apiData){
+	 if (apiName==GET_SERVER_DETAIL){
+	 oApiData = createApiDataObject(apiData);
+	 sendAajx('/api/getServerDetail/',oApiData,getServerDetailCallback);
+	 }
+	 else if (apiName==GET_SERVER_GROUP_LIST){
+	 oApiData = createApiDataObject(apiData);
+	 sendAajx('/api/getServerGroupList/',oApiData,getServerGroupListCallback);
+	 }
+	 else{
+	 console.log(apiName);
+	 }
+	 }
+
+	 function getServerGroupListCallback(oResponse,apiUrl,apiData){
+	 console.log(oResponse);
+	 $("#container").html("");
+	 if(oResponse.status.code==2000){
+	 //console.log(oResponse);
+	 //oServers =
+	 var html = getServerGroupListHtml(oResponse)
+	 $("#container").append(html);
+	 addServerGroupListEvent(oResponse,apiUrl,apiData);
+	 }
+	 else{
+	 alert("fail");
+	 }
+	 }
+	 function getServerGroupListHtml(oResponse){
+	 var html = "<h4>Server Group List</h4>";
+	 html += '<table class="responsive table">';
+	 html += '<thead>';
+	 html += '<tr>';
+	 html += '<th>ip</th>';
+	 html += '<th>gmond_install_flag</th>';
+	 html += '<th>status</th>';
+	 html += '<th>server_version</th>';
+	 html += '</thead>';
+	 html += '<tbody>';
+	 for (var index=0;index<oResponse.data.length;index++){
+	 html += '<tr>';
+	 html += '<td>'+oResponse.data[index].fields.ip+'</td>';
+	 html += '<td>'+oResponse.data[index].fields.gmond_install_flag+'</td>';
+	 html += '<td>status</td>';
+	 html += '<td>'+oResponse.data[index].fields.server_version+'</td>';
+	 html += '</tr>';
+	 }
+	 html += '</tbody>';
+	 html += '</table>';
+
+	 html += '<ul class="pager">';
+	 html += '<li><a href="#" page="'+oResponse.extra.page+'" id="server_group_pre_btn">Previous</a></li>';
+	 html += '<li><a href="#" page="'+oResponse.extra.page+'" id="server_group_next_btn">Next</a></li>';
+	 html += '</ul>';
+	 return html;
+	 }
+	 function addServerGroupListEvent(oResponse,apiUrl,apiData){
+	 $("#server_group_pre_btn").click(function(){
+	 apiData.page = ($(this).attr("page")*1) - 1;
+	 sendAajx(apiUrl,apiData,getServerGroupListCallback);
+	 });
+
+	 $("#server_group_next_btn").click(function(){
+	 apiData.page = ($(this).attr("page") *1) + 1;
+	 sendAajx(apiUrl,apiData,getServerGroupListCallback);
+	 });
+
+	 if(apiData.group_type==0){
+	 manageCntentMenu(INSTALL_SERVER_VIEW);
+	 }
+	 else if (apiData.group_type==1){
+	 manageCntentMenu(UN_INSTALL_SERVER_VIEW);
+	 }
+
+	 }
+	 function getServerDetailCallback(oResponse,apiUrl,apiData){
+	 console.log(oResponse);
+	 $("#container").html("");
+	 if(oResponse.status.code==2000){
+	 var html = getServerDetailHtml(oResponse.data)
+	 $("#container").append(html);
+	 addServerDetailEvent(oResponse,apiUrl,apiData);
+	 }
+	 else{
+	 alert("fail");
+	 }
+	 }
+
+	 function getServerDetailHtml(oData){
+	 var html = "<h4>server detail</h4>";
+	 for (var index=0;index<oData.length;index++){
+	 html += '<p>ip => '+oData[index].fields.ip+'</p>';
+	 html += '<p>status => status</p>';
+	 html += '<p>server_version => '+oData[index].fields.server_version+'</p>';
+	 html += '<p>gmond_install_flag => '+oData[index].fields.gmond_install_flag+'</p>';
+	 html += '<p>plugin_lists => '+oData[index].fields.plugin_lists+'</p>';
+	 html += '<p>server_userid => '+oData[index].fields.server_userid+'</p>';
+	 html += '<p>server_password => '+oData[index].fields.server_password+'</p>';
+	 }
+	 return html;
+	 }
+	 function addServerDetailEvent(oResponse,apiUrl,apiData){
+	 manageCntentMenu(SERVER_DETAIL);
+	 $("#edit_server_id").val(oResponse.data[0].pk);
+	 $("#edit_server_userid").val(oResponse.data[0].fields.server_userid);
+	 $("#edit_server_userpass").val(oResponse.data[0].fields.server_password);
+	 }
+	 */
+</script>
+{% endblock %}}

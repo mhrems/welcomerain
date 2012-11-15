@@ -1,0 +1,28 @@
+<html>
+	<head>
+		<script type='text/javascript' language='javascript' src='http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js'></script>
+		
+		<script type='text/javascript' src='../static/bond.js'></script>		
+		
+		<script>
+			console.log('start app')
+		</script>	
+	</head>
+	<body>
+		<a href="/">back</a>
+		<h1>addchart</h1>
+		
+		<form method='post' action='.' id="chart_form">
+			{% csrf_token %}	
+            <div><input type='text' value='char_name' name='name'></div>
+            <div id="div1"></div>
+            <div id="div2"></div>
+            <div id="div3"></div>
+            <input type="hidden" value='false' name='check_cluster' id='check_cluster'>
+            <input type="hidden" value='false' name='check_host' id='check_host'>
+            <input type="hidden" value='false' name='check_datasource' id='check_datasource'>
+            <input type="button" value="add" name='addbutton' id='chart_form_btn'>
+			<input type="hidden" value="add">
+		</form>
+	</body>
+</html>

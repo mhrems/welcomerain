@@ -1,0 +1,41 @@
+from django.test.client import Client
+from django.test import TestCase
+from welcome_rain.common.mhrlog import logInfo,logAddLine
+#from welcome_rain.common.const import *
+
+
+#logger = logging.getLogger('wr.custom')
+
+class APITestCase(TestCase):
+    
+    def test_GetClusterList(self):
+        response = self.client.get('/api/getClusterList/')
+        logInfo('status_code='+str(response.status_code),"test_getClusterList")
+        logInfo(response.content)
+        logAddLine()
+        
+    def test_GetHostList(self):
+        response = self.client.post('/api/getHostList/', {'cluster': 'mhr'})
+        logInfo('status_code='+str(response.status_code),"test_getHostList")
+        logInfo(response.content)
+        logAddLine()
+
+    def test_GetDataSourceList(self):
+        response = self.client.post('/api/getDataSourceList/', {'cluster': 'mhr','host':'dev.local'})
+        logInfo('status_code='+str(response.status_code),"test_getDataSourceList")
+        logInfo(response.content)
+        logAddLine()
+
+    def test_GetData(self):
+        
+        data = dict()
+        #data['target'] = "mhr/dev.local/cpu_system.rrd"
+        data['target'] = "__SummaryInfo__/cpu_system.rrd"
+        data['startTime'] = "2012:09:05:00:00"
+        data['endTime'] = "2012:09:07:00:00"
+        data['format'] = "json"
+        
+        response = self.client.post('/api/getData/', data)
+        logInfo('status_code='+str(response.status_code),"test_getData")
+        logInfo(response.content)
+        logAddLine()

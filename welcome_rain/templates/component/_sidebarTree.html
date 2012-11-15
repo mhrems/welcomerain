@@ -1,0 +1,221 @@
+<div class="sidenav">
+
+	<div class="mainnav">
+		{{ Tree_Menu|safe }}
+	</div>
+
+</div><!-- End sidenav -->
+
+<script>
+	var APIDATA_EQUAL = "!*";
+	var APIDATA_SEPERATOR = "+$";
+
+	var GET_ALERT_HISTORY = 'getAlertHistory';
+	var GET_ALERT_DETAIL = "getAlertDetail";
+	var GET_DATA = 'getData';
+	var GET_SERVER_GROUP_LIST = 'getServerGroupList';
+	var GET_SERVER_DETAIL = 'getServerDetail';
+
+	var INSTALL_GMOND_TASK = 0;
+	var INSTALL_PLUGIN_TASK = 1;
+
+	function getNodeFullPath(data) {
+		var nodeName = data.rslt.obj.attr("id") + ",";
+		//var parents = [];
+		data.rslt.obj.parents("li").each(function() {
+			//parents.push({ id: $(this).attr("id"), description: $(this).children("a").text() });
+			nodeName = nodeName + $(this).attr("id") + ",";
+		});
+		return nodeName;
+	}
+
+	function isActionNode(data) {
+		var nodeType = data.rslt.obj.attr("nodeType");
+		if (nodeType == "action") {
+			return true;
+		}
+		return false;
+	}
+
+	function getAPIName(node) {
+		return node.rslt.obj.attr("apiName");
+	}
+
+	function getAPIData(node) {
+		return node.rslt.obj.attr("apiData");
+	}
+
+	function getTreeMenuType() {
+		return $("#treeMenu").attr("menuType");
+	}
+
+	function createApiDataObject(apiData) {
+
+		var dataSeperat = apiData.split(APIDATA_SEPERATOR);
+		var data = new Object();
+		for (var index = 0; index < dataSeperat.length; index++) {
+			var dataNameValue = dataSeperat[index].split(APIDATA_EQUAL);
+			data[dataNameValue[0]] = dataNameValue[1];
+		}
+
+		return data;
+	}
+
+	function sendAajx(sUrl, oData, callback) {
+		$.ajax({
+			url : sUrl,
+			type : 'POST',
+			dataType : 'json',
+			data : oData,
+			success : function(data) {
+				callback(data, sUrl, oData);
+			},
+			error : function(jqXHR, textStatus, errorThrown) {
+				console.log(jqXHR)
+				console.log(textStatus)
+				console.log(errorThrown)
+				return false;
+			}
+		});
+	}
+
+
+	//to add a new node to tree, but this function is not fully implemented yet!!!
+	// caption
+	function addServerNodeToTree(parent_id, server_id, server_ip, apiname,apidata) {
+		var parent_name = "#" + parent_id + "\\";
+		var node = $("#treeMenu").jstree("create", $(parent_name), "inside", {
+						"data" : server_ip, 
+						"attr" : { 
+							"id" : parent_id, 
+							"apiname":apiname,
+							"apidata":apidata, 
+							"nodetype":"action",
+							}
+						}, function() {}, true);
+		
+		var child = node.children("a");
+		child.attr("id", server_id);
+	}
+
+            
+	function deleteNodeByID(node_id) {
+		var node = searchNodeByID(node_id);
+		if (node == null)
+			return;
+
+		deleteNode(node);
+	}
+
+	//delete a node from tree by using node object!!! not id!!!
+	function deleteNode(node) {
+		$("#treeMenu").jstree("delete_node", node);
+	}
+
+	//to move src node to target node. position argument explains how to add src node to target node
+	// in case of "after", src node will be sibliing of target node
+	// in case of "inside", src node will be child of target node
+	function moveNode(src, target, position) {
+		$("#treeMenu").jstree("move_node", src, target, position);
+	}
+
+	var gTreeNode = null;
+
+	//node search function by id
+	function searchNodeByID(node_id) {
+		gTreeNode = null;
+
+		retNode = $("#treeMenu").find('li').andSelf().each(function() {
+			node = $(this);
+			child = node.children("a");
+			child_id = child.attr('id');
+			//console.log("child="+child_id);
+			if (node_id == child_id) {
+				gTreeNode = node;
+				return node;
+			}
+		});
+
+		return gTreeNode;
+	}
+
+	//exclusive menu node search function by id
+	function searchMenuNodeByID(node_id) {
+		gTreeNode = null;
+
+		retNode = $("#treeMenu").find('ul').andSelf().each(function() {
+			node = $(this);
+			if (node.attr("id") == node_id) {
+				gTreeNode = node;
+				return node;
+			}
+		});
+
+		return gTreeNode;
+	}
+
+	$(function() {
+		// TO CREATE AN INSTANCE
+		// select the tree container using jQuery
+		$("#treeMenu")
+		// call `.jstree` with the options object
+		.jstree({
+			"themes" : {
+				"theme" : "apple",
+				"dots" : false,
+				"icons" : false
+			},
+			// the `plugins` array allows you to configure the active plugins on this instance
+			"plugins" : ["themes", "html_data", "ui", "crrm", "hotkeys"],
+			// each plugin you have included can have its own config object
+			"core" : { }
+			// it makes sense to configure a plugin only if overriding the defaults
+
+		})
+		// EVENTS
+		// each instance triggers its own events - to process those listen on the container
+		// all events are in the `.jstree` namespace
+		// so listen for `function_name`.`jstree` - you can function names from the docs
+		.bind("loaded.jstree", function(event, data) {
+			// you get two params - event & data - check the core docs for a detailed description
+		});
+
+		$("#treeMenu").bind("open_node.jstree", function(e, data) {
+			// data.inst is the instance which triggered this event
+			//data.inst.select_node("#phtml_2", true);
+		});
+
+		$("#treeMenu").bind("select_node.jstree", function(event, data) {
+			// `data.rslt.obj` is the jquery extended node that was clicked
+
+			//console.log(data.get_text);
+
+			if (isActionNode(data)) {
+				
+				//console.log(getAPIName(data))
+				//console.log(getAPIData(data))
+				
+				handlerTreeMenuEvent(getAPIName(data), getAPIData(data));
+				//addServerNodeToTree("main_NotInstalled","6","123.456.789.111","apiname","apidata");
+				
+				//var node1 = searchMenuNodeByID("main_Installed");
+				//var node2 = searchNodeByID("4");
+
+				//deleteNode(node1);
+
+				//console.log("isActionNode true : node="+node.attr('id'));
+				//console.log(node1);
+				//console.log(node2);
+
+				//moveNode(node2, node1, "inside");
+
+			} else {
+				//searchNodeByID("Dashboard");
+				//console.log("isActionNode false : " + node.attr("id"));
+			}
+			//console.log(data.rslt.obj.attr("id"))
+		});
+
+	});
+
+</script>

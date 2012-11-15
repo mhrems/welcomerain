@@ -1,0 +1,14 @@
+imodules {
+ module {
+   name = "temp_monitor"
+   language = "python"
+ }
+}
+
+collection_group {
+ collect_every = 10
+ time_threshold = 50
+ metric {
+   name = "203"
+ }
+}

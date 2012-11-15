@@ -1,0 +1,9 @@
+{
+	"cluster": "mhr",
+	"host": [
+		{"name":"192.168.0.209"},
+		{"name":"192.168.0.84"},
+		{"name": "__SummaryInfo__"},
+		{"name": "dev.local"}
+	]
+}

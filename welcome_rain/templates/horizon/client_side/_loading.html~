@@ -1,0 +1,12 @@
+{% extends "horizon/client_side/template.html" %}
+
+
+{% block id %}spinner-modal{% endblock %}
+
+{% block template %}
+
+<div class="modal loading hide">
+  <p>[[text]]&hellip;</p>
+</div>
+
+{% endblock %}

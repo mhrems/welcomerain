@@ -1,0 +1,65 @@
+{% extends "component/_loginLayout.html" %}
+
+
+{% block content %}
+
+
+        <div class="loginContainer">
+            <form class="form-horizontal" method='post' action="." id="loginForm" >
+            	{% csrf_token %}	
+                <div class="form-row row-fluid">
+                    <div class="span12">
+                        <div class="row-fluid">
+                            <label class="form-label span12" for="username">
+                                Username:
+                                <span class="icon16 icomoon-icon-user-2 right gray marginR10"></span>
+                            </label>
+                            <input class="span12" id="username" type="text" name="username" value="admin" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-row row-fluid">
+                    <div class="span12">
+                        <div class="row-fluid">
+                            <label class="form-label span12" for="password">
+                                Password:
+                 
+                            </label>
+                            <input class="span12" id="password" type="password" name="password" value="mhrinc" />
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row row-fluid">                       
+                    <div class="span12">
+                        <div class="row-fluid">
+                            <div class="form-actions">
+                            <div class="span12 controls">
+                                
+                                <button type="submit" class="btn btn-info right" id="loginBtn"><span class="icon16 icomoon-icon-enter white"></span> Login</button>
+                            </div>
+                            </div>
+                        </div>
+                    </div> 
+                </div>
+				<input type="hidden" name="next" value="/">
+            </form>
+        </div>
+<!--
+<html>
+	<title>
+			
+	</title>
+	<body>
+		<h1>Login</h1>
+		<form method='post' action='.'>
+		{% csrf_token %}	
+		{{form.username}}
+			{{form.password}}
+			<input type="hidden" name="next" value="/">
+			<input type="submit" value="login">
+		</form>
+	</body>
+</html>
+-->
+{% endblock %}}

@@ -1,0 +1,198 @@
+{% extends "component/_dialogLayout.html" %}
+
+{% block content %}
+
+<script type="text/javascript" src="/static/js/plugins/flotr2/flotr2.js"></script>
+
+<link href="/static/datetime/jquery-ui-timepicker-addon.css" rel="stylesheet" />
+<script type="text/javascript" src="/static/datetime/jquery-ui-sliderAccess.js"></script>
+<script type="text/javascript" src="/static/datetime/jquery-ui-timepicker-addon.js"></script>
+
+<script type='text/javascript' src='/static/js/plugins/mhr/dateformat.js'></script>
+<script type='text/javascript' src='/static/js/plugins/mhr/table.js'></script>
+<script type='text/javascript' src='/static/js/plugins/mhr/graph.js'></script>
+
+<style>
+	.chart_box{
+		
+	}
+	.chart_title{
+		//background : #dfdfdf;
+		
+	}
+	.chart_content{
+		
+	}
+	.in_chart_title{
+		
+	}
+</style>
+
+<div class="dialogWrapper">
+
+	<!-- Build page from here: -->
+	<div class="row-fluid">
+
+		<div class="span12">
+		
+			<div class="page-header">
+				<h4 class="clearfix"><span class="icon16 icomoon-icon-loop"></span><span>Chart Detail</span></h4>
+			</div>
+			
+			<div class="box chart">
+
+            <div class="title">
+
+            <h4><span class="icon16 brocco-icon-refresh"></span><span>{{target}}</span></h4>
+            </div>
+            <div class="content">
+            	<div class="modal-footer" style="border-top: 0px;">
+            		<div class="left">
+                	Start <input type="text" id="start_time" class="btn" style="margin-bottom: 0; margin-right:20px; width:80px" readonly='true'>
+					End <input type="text" id="end_time" style="margin-bottom: 0; margin-right:20px; width:80px" class="btn" readonly='true'>
+					<a href="#" id="search_btn" class="btn btn-primary">Search</a>
+					</div>	
+
+                </div>
+                <center>
+					<div id="container" style="width:550px"></div>
+				</center>
+            </div>
+            </div>
+
+            </div>
+			
+			
+		</div>
+	</div>
+</div>
+
+
+
+
+<input type="hidden" id="data_target" value="{{target}}">
+
+
+<script type="text/javascript">
+
+$(document).ready(function() {
+	$('#start_time').datetimepicker({
+		dateFormat : "yy:mm:dd",
+		maxDate: new Date(),
+		onSelect: function (dateText, inst) {
+			console.log("from_date onSelect");
+			//validSearchDate();
+        }
+	});
+	
+	$("#end_time").datetimepicker({
+		dateFormat : "yy:mm:dd",
+		maxDate: new Date(),
+		onSelect: function (dateText, inst) {
+			console.log("from_date onSelect");
+			//validSearchDate();
+        }
+	});
+	
+	$("#search_btn").click(function(){
+		var target = $("#data_target").val();
+		var start_time = ($("#start_time").val()).replace(" ",":");
+		var end_titme = ($("#end_time").val()).replace(" ",":");
+		var cCharter = new Charter();
+		cCharter.createDetailChart(target,start_time,end_titme);
+		/*$("#bond_body_0").mhrGraphChart({
+			'realTimeActive' : false,
+			'target' : target,
+			'titleId' : 'bond_title_0',
+			'startTime' : start_time,
+			'endTime' : end_titme,
+			'createTitleFlag' : target
+		});*/
+		
+	});
+
+});
+
+
+function showChartDetail() {
+	var cCharter = new Charter();
+	var target = $("#data_target").val();
+	cCharter.createDetailChart(target);
+}
+showChartDetail();
+/*
+	$("#container").mhrGraphTable({
+		'graphNumber' : 1,
+		'isDetail' : true
+	});
+	var target = $("#data_target").val();
+	$("#bond_body_0").mhrGraphChart({
+		'realTimeActive' : false,
+		'isDetail' : true,
+		'target' : target,
+		'titleId' : 'bond_title_0'
+	});
+	$('#start_time').datetimepicker({
+		dateFormat : "yy:mm:dd",
+		maxDate: new Date(),
+		onSelect: function (dateText, inst) {
+			console.log("from_date onSelect");
+			//validSearchDate();
+        }
+	});
+	
+	$("#end_time").datetimepicker({
+		dateFormat : "yy:mm:dd",
+		maxDate: new Date(),
+		onSelect: function (dateText, inst) {
+			console.log("from_date onSelect");
+			//validSearchDate();
+        }
+	});
+	
+	$("#search_btn").click(function(){
+		var target = $("#data_target").val();
+		var start_time = ($("#start_time").val()).replace(" ",":");
+		var end_titme = ($("#end_time").val()).replace(" ",":");
+
+		$("#bond_body_0").mhrGraphChart({
+			'realTimeActive' : false,
+			'target' : target,
+			'titleId' : 'bond_title_0',
+			'startTime' : start_time,
+			'endTime' : end_titme,
+			'createTitleFlag' : target
+		});
+		
+	});
+	
+*/
+
+	$.ajax({
+		url : '/api/addAlertHistory/',
+		type : 'POST',
+		dataType: 'json',
+		data : {
+			"userId" : "1",
+            "serverId" : "38", 
+            "serverIp" : "192.168.0.1",
+            "alertId" : "1",
+            "pluginId" : "1",
+            "alertMessage" : "alertMessage",
+		},
+		success: function(data){
+				console.log(1);
+				console.log(data);
+		},
+		error: function (jqXHR, textStatus, errorThrown) {
+		  	console.log(jqXHR)
+		  	console.log(textStatus)
+		  	console.log(errorThrown)
+			return false;
+  		}
+	});
+
+</script>
+{% endblock %}}
+
+

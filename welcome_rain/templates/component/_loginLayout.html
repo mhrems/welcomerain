@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<!--[if IE 7]>    <html class="no-js ie7 ie" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js ie8 ie" lang="en"> <![endif]-->
+<!--[if IE 9]>    <html class="no-js ie9 ie" lang="en"> <![endif]-->
+<!--[if gt IE 9]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+
+<head>
+	{% include "component/_head.html" %}
+</head>
+	
+<body class="loginPage">		
+	
+	<div class="container-fluid">
+
+        <div id="header">
+
+            <div class="row-fluid">
+
+                <div class="navbar">
+                    <div class="navbar-inner">
+                      <div class="container">
+                            <a class="brand" href="#">Valkis<span class="slogan"> Innovative Monitoring System for devops</span></a>
+                      </div>
+                    </div><!-- /navbar-inner -->
+                  </div><!-- /navbar -->
+                
+
+            </div><!-- End .row-fluid -->
+
+        </div><!-- End #header -->
+
+    </div>
+
+		
+	<!-- Main page container -->
+	<div class="container-fluid">
+
+		{% block content %}{% endblock %}
+			
+	</div>
+	
+</body>
+	
+</html>

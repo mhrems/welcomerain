@@ -1,0 +1,147 @@
+{% extends "component/_baseLayout.html" %}
+
+{% block content %}
+
+<div class="pageWrapper">
+
+	<div class="page-header">
+
+		<h4 class="clearfix">
+			<span class="icon16 icomoon-icon-loop"></span>
+			<span>Alerts</span>
+			<div class="right">
+				
+			</div>
+		</h4>
+	</div><!-- End .heading-->
+
+	<!-- Build page from here: -->
+	<div class="row-fluid">
+
+		<div id="container">
+			
+		</div>
+
+	</div><!-- End .row-fluid -->
+</div>
+
+<script type='text/javascript' src='{{ STATIC_URL }}js/plugins/mhr/dateformat.js'></script>
+<script type='text/javascript' src='{{ STATIC_URL }}js/plugins/mhr/htmllib.js'></script>
+
+<script type="text/javascript">
+	var FIRST_API_DATA = 'server_id!*'
+	$(document).ready(function() {
+		handlerTreeMenuEvent(GET_ALERT_HISTORY,FIRST_API_DATA);
+	});
+	
+	function handlerTreeMenuEvent(apiName, apiData) {
+		if (apiName == GET_ALERT_HISTORY) {
+			oApiData = createApiDataObject(apiData);
+			var nowDate = new Date();
+			oApiData.endTime = nowDate.format("yyyy:mm:dd:hh:MM");
+			var startDate = nowDate.removeHours(10000);
+			oApiData.startTime = startDate.format("yyyy:mm:dd:hh:MM");
+			oApiData.page = 1
+			sendAajx('/api/getAlertHistory/', oApiData, getAlertHistoryCallback);
+		} else if (apiName == GET_ALERT_DETAIL) {
+			oApiData = createApiDataObject(apiData);
+			sendAajx('/api/getAlertDetail/', oApiData, getAlertDetailCallback);
+		} else {
+			console.log(apiName);
+		}
+	}
+
+	function getAlertHistoryCallback(oResponse, apiUrl, apiData) {
+		$("#container").html("");
+		if (oResponse.status.code == 2000) {
+			if(oResponse.data){
+				var html = getAlertHistoryHtml(oResponse);
+				$("#container").append(html);
+				addAlertHistoryEvent(apiUrl, apiData);
+			}
+			else{
+				var html = getNoDataBox('No Alert!!!');
+				$("#container").append(html);
+			}
+			
+		} else {
+			alert("fail");
+		}
+	}
+
+	function getAlertHistoryHtml(oResponse) {
+		console.log(oResponse)
+		var html = "<h4>alert history</h4>";
+		html += '<table class="responsive table">';
+		html += '<thead>';
+		html += '<tr>';
+		html += '<th>server_ip</th>';
+		html += '<th>plugin_name</th>';
+		html += '<th>alerts_condition</th>';
+		html += '<th>alert_message</th>';
+		html += '</thead>';
+		html += '<tbody>';
+		for (var index = 0; index < oResponse.data.length; index++) {
+			html += '<tr>';
+			html += '<td>' + oResponse.data[index].fields.server_ip + '</td>';
+			html += '<td>' + oResponse.data[index].fields.plugin.fields.plugin_name + '</td>';
+			html += '<td>' + oResponse.data[index].fields.alert.fields.condition + '</td>';
+			html += '<td>' + oResponse.data[index].fields.alert_message + '</td>';
+			html += '</tr>';
+		}
+		html += '</tbody>';
+		html += '</table>';
+
+		html += '<ul class="pager">';
+		html += '<li><a href="#" page="' + oResponse.extra.page + '" id="alert_history_pre_btn">Previous</a></li>';
+		html += '<li><a href="#" page="' + oResponse.extra.page + '" id="alert_history_next_btn">Next</a></li>';
+		html += '</ul>';
+		return html;
+	}
+
+	function addAlertHistoryEvent(apiUrl, apiData) {
+		$("#alert_history_pre_btn").click(function() {
+			apiData.page = ($(this).attr("page") * 1) - 1;
+			sendAajx(apiUrl, apiData, getAlertHistoryCallback);
+		})
+
+		$("#alert_history_next_btn").click(function() {
+			apiData.page = ($(this).attr("page") * 1) + 1;
+			sendAajx(apiUrl, apiData, getAlertHistoryCallback);
+		})
+	}
+
+	function getAlertDetailCallback(oResponse, apiUrl, apiData) {
+		$("#container").html("");
+		if (oResponse.status.code == 2000) {
+			var html = getAlertDetailHtml(oResponse.data)
+			$("#container").append(html);
+			addAlertDetailEvent();
+		} else {
+			alert("fail");
+		}
+	}
+
+	function getAlertDetailHtml(oData) {
+		var html = '<div class="box">';
+		html += getFormBoxTitle('Alert detail');
+		html += '   <div class="content">';
+
+		for (var index = 0; index < oData.length; index++) {
+			html += getFormElement('plugin_name', oData[index].fields.plugin.fields.plugin_name);
+			html += getFormElement('condition', oData[index].fields.condition);
+			html += getFormElement('threshold_value', oData[index].fields.threhhold_vale);
+			html += getFormElement('description',oData[index].fields.descriptions);
+		}
+
+		html += '   </div>';
+		html += '</div>';
+
+		return html
+	}
+
+	function addAlertDetailEvent() {
+
+	}
+</script>
+{% endblock %}}

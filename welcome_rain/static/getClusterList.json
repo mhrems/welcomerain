@@ -1,0 +1,9 @@
+{
+   "cluster" : [{
+       "name" : "mhr"
+   },{
+	"name" : "mhr1"
+   },{
+	"name" : "mhr2" 
+   }]
+}

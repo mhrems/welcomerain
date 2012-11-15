@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<!--[if IE 7]>    <html class="no-js ie7 ie" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js ie8 ie" lang="en"> <![endif]-->
+<!--[if IE 9]>    <html class="no-js ie9 ie" lang="en"> <![endif]-->
+<!--[if gt IE 9]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+	<head>
+		<meta charset="utf-8">
+		<title>File explorer | Huraga Bootstrap Admin Template</title>
+		<meta name="description" content="">
+		<meta name="author" content="Walking Pixels | www.walkingpixels.com">
+		<meta name="robots" content="index, follow">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		
+		<!-- jQuery plUpload -->
+		<link rel="stylesheet" href="css/plugins/jquery.plupload.queue.css">
+		<link rel="stylesheet" href="css/plugins/jquery.ui.plupload.css">
+		
+		<!-- CSS styles -->
+		<link rel='stylesheet' type='text/css' href='css/huraga-dark.css'>
+		
+		<!-- Fav and touch icons -->
+		<link rel="shortcut icon" href="img/icons/favicon.ico">
+		<link rel="apple-touch-icon-precomposed" sizes="114x114" href="img/icons/apple-touch-icon-114-precomposed.png">
+		<link rel="apple-touch-icon-precomposed" sizes="72x72" href="img/icons/apple-touch-icon-72-precomposed.png">
+		<link rel="apple-touch-icon-precomposed" href="img/icons/apple-touch-icon-57-precomposed.png">
+		
+		<!-- JS Libs -->
+		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+		<script>window.jQuery || document.write('<script src="js/libs/jquery.js"><\/script>')</script>
+		<script src="js/libs/modernizr.js"></script>
+		<script src="js/libs/selectivizr.js"></script>
+		
+		<script>
+			$(document).ready(function(){
+				
+				// Tooltips
+				$('[title]').tooltip({
+					placement: 'top'
+				});
+				
+			});
+		</script>
+	</head>
+	<body>
+		
+		<!-- Main page header -->
+		<header class="container">
+		
+			<!-- Main page logo -->
+			<h1><a href="login.html" class="brand">Huraga</a></h1>
+			
+			<!-- Main page headline -->
+			<p>A beautifully minimalistic admin template</p>
+			
+			<!-- Alternative navigation -->
+			<nav>
+				<ul>
+					<li><a href="#">Logout</a></li>
+				</ul>
+			</nav>
+			<!-- /Alternative navigation -->
+			
+		</header>
+		<!-- /Main page header -->
+		
+		<!-- Main page container -->
+		<section class="container" role="main">
+		
+			<!-- Left (navigation) side -->
+			<div class="navigation-block">
+			
+				<!-- Sample left search bar -->
+				<form class="side-search">
+					<input type="text" class="rounded" placeholder="To search type and hit enter">
+				</form>
+				<!-- /Sample left search bar -->
+				
+				<!-- Main navigation -->
+				<nav class="main-navigation" role="navigation">
+					<ul>
+						<li><a href="index.html" class="no-submenu"><span class="icon-home"></span>Dashboard</a></li>
+						<li><a href="forms.html" class="no-submenu"><span class="icon-tasks"></span>Forms</a></li>
+						<li><a href="charts.html" class="no-submenu"><span class="icon-signal"></span>Charts</a></li>
+						<li><a href="tables.html" class="no-submenu"><span class="icon-table"></span>Tables</a></li>
+						<li>
+							<a href="#"><span class="icon-picture"></span>Gallery</a>
+							<ul>
+								<li><a href="gallery.html">Car Gallery</a></li>
+								<li><a href="gallery.html">Food Gallery</a></li>
+								<li><a href="gallery.html">Art Gallery</a></li>
+								<li><a href="gallery.html">Animal Gallery</a></li>
+								<li><a href="gallery.html">Super long name to see how it collapse</a></li>
+							</ul>
+						</li>
+						<li class="current"><a href="file-explorer.html" class="no-submenu"><span class="icon-file"></span>File explorer</a></li>
+						<li><a href="calendar.html" class="no-submenu"><span class="icon-calendar"></span>Calendar</a></li>
+						<li><a href="ui-buttons.html" class="no-submenu"><span class="icon-magic"></span>UI & Buttons</a></li>
+						<li><a href="typo.html" class="no-submenu"><span class="icon-font"></span>Typography</a></li>
+						<li><a href="grid.html" class="no-submenu"><span class="icon-th"></span>Grid</a></li>
+						<li><a href="goodies.html" class="no-submenu"><span class="icon-heart"></span>Goodies</a></li>
+					</ul>
+				</nav>
+				<!-- /Main navigation -->
+				
+				<!-- User profile -->
+				<section class="user-profile">
+					<figure class="clearfix">
+						<img alt="John Pixel avatar" src="http://placekitten.com/60/60">
+						<figcaption>
+							<strong><a href="#" class="">John Pixel</a></strong>
+							<em>marketing manager</em>
+							<ul>
+								<li><a class="btn btn-primary btn-flat" href="#" title="Account settings">settings</a></li>
+								<li><a class="btn btn-primary btn-flat" href="#" title="Message inbox">inbox</a></li>
+							</ul>
+						</figcaption>
+					</figure>
+				</section>
+				<!-- /User profile -->
+				
+			</div>
+			<!-- Left (navigation) side -->
+			
+			<!-- Right (content) side -->
+			<div class="content-block" role="main">
+			
+				<!-- Page header -->
+				<article class="page-header">
+					<h1>File explorer</h1>
+					<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam blandit, dolor mollis adipiscing elementum, ipsum turpis euismod tellus, vitae mollis velit leo id nisi. Morbi non lectus turpis, eu interdum orci. In at rutrum nisi. Donec sit amet urna purus, at eleifend ipsum. Sed magna enim, tempor eu tincidunt vitae, dictum tristique arcu.</p>
+				</article>
+				<!-- /Page header -->
+				
+				<!-- Grid row -->
+				<div class="row">
+				
+					<!-- Data block  -->
+					<article class="span12 data-block raw">
+						<div class="data-container">
+							<section>
+								<ul class="thumbnails">
+									<li class="span2"><a class="thumbnail" href="#"><img alt="" src="http://placehold.it/119x82"></a></li>
+									<li class="span2"><a class="thumbnail" href="#"><img alt="" src="http://placehold.it/119x82"></a></li>
+									<li class="span2"><a class="thumbnail" href="#"><img alt="" src="http://placehold.it/119x82"></a></li>
+									<li class="span2"><a class="thumbnail" href="#"><img alt="" src="http://placehold.it/119x82"></a></li>
+									<li class="span2"><a class="thumbnail" href="#"><img alt="" src="http://placehold.it/119x82"></a></li>
+									<li class="span2"><a class="thumbnail" href="#"><img alt="" src="http://placehold.it/119x82"></a></li>
+									<li class="span2"><a class="thumbnail" href="#"><img alt="" src="http://placehold.it/119x82"></a></li>
+									<li class="span2"><a class="thumbnail" href="#"><img alt="" src="http://placehold.it/119x82"></a></li>
+									<li class="span2"><a class="thumbnail" href="#"><img alt="" src="http://placehold.it/119x82"></a></li>
+									<li class="span2"><a class="thumbnail" href="#"><img alt="" src="http://placehold.it/119x82"></a></li>
+									<li class="span2"><a class="thumbnail" href="#"><img alt="" src="http://placehold.it/119x82"></a></li>
+									<li class="span2"><a class="thumbnail" href="#"><img alt="" src="http://placehold.it/119x82"></a></li>
+									<li class="span2"><a class="thumbnail" href="#"><img alt="" src="http://placehold.it/119x82"></a></li>
+									<li class="span2"><a class="thumbnail" href="#"><img alt="" src="http://placehold.it/119x82"></a></li>
+									<li class="span2"><a class="thumbnail" href="#"><img alt="" src="http://placehold.it/119x82"></a></li>
+									<li class="span2"><a class="thumbnail" href="#"><img alt="" src="http://placehold.it/119x82"></a></li>
+									<li class="span2"><a class="thumbnail" href="#"><img alt="" src="http://placehold.it/119x82"></a></li>
+									<li class="span2"><a class="thumbnail" href="#"><img alt="" src="http://placehold.it/119x82"></a></li>
+								</ul>
+							</section>
+						</div>
+					</article>
+					<!-- /Data block  -->
+					
+					<!-- Data block -->
+					<article class="span12 data-block">
+						<div class="data-container">
+							<header>
+								<h2>jQuery plupload</h2>
+							</header>
+							<section>
+								<p>Allows you to upload files using HTML5 Gears, Silverlight, Flash, BrowserPlus or normal forms, providing some unique features such as upload progress, image resizing and chunked uploads.</p>
+								<div class="plupload"></div>
+							</section>
+						</div>
+					</article>
+					<!-- /Data block -->
+					
+				</div>
+				<!-- /Grid row -->
+				
+			</div>
+			<!-- /Right (content) side -->
+			
+		</section>
+		<!-- /Main page container -->
+		
+		<!-- Main page footer -->
+		<footer class="container">
+			<p>Built with love on <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap</a> by <a href="http://www.walkingpixels.com">Walking Pixels</a>.</p>
+			<ul>
+				<li><a href="#" class="">Support</a></li>
+				<li><a href="#" class="">Documentation</a></li>
+				<li><a href="#" class="">API</a></li>
+			</ul>
+			<a href="#top" class="btn btn-primary btn-flat pull-right">Top &uarr;</a>
+		</footer>
+		<!-- /Main page footer -->
+		
+		<!-- Scripts -->
+		<script src="js/navigation.js"></script>
+		<script src="js/bootstrap/bootstrap-tooltip.js"></script>
+		
+		<!-- jQuery plUpload -->
+		<script src="js/plugins/plUpload/plupload.full.js"></script>
+		<script src="js/plugins/plUpload/jquery.plupload.queue/jquery.plupload.queue.js"></script>
+		<script>
+			$(document).ready(function() {
+				
+				$('.plupload').pluploadQueue({
+					runtimes : 'html5,gears,flash,silverlight,browserplus',
+					url : 'upload/upload.php',
+					max_file_size : '10mb',
+					chunk_size : '1mb',
+					unique_names : true,
+					resize : {width : 320, height : 240, quality : 90},
+					filters : [
+						{title : "Image files", extensions : "jpg,gif,png"},
+						{title : "Zip files", extensions : "zip"}
+					],
+					flash_swf_url : 'js/plugins/plUpload/plupload.flash.swf',
+					silverlight_xap_url : 'js/plugins/plUpload/plupload.silverlight.xap'
+				});
+				$(".plupload_header").remove();
+				$(".plupload_progress_container").addClass("progress").addClass('progress-striped');
+				$(".plupload_progress_bar").addClass("bar");
+				$(".plupload_button").each(function(e){
+					if($(this).hasClass("plupload_add")){
+						$(this).attr("class", 'btn btn-primary btn-alt pl_add btn-small');
+					} else {
+						$(this).attr("class", 'btn btn-success btn-alt pl_start btn-small');
+					}
+				});
+				
+			});
+		</script>
+		
+	</body>
+</html>

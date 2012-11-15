@@ -1,0 +1,207 @@
+{% extends "component/_baseLayout.html" %}
+
+{% block content %}
+
+<div class="pageWrapper">
+
+	<div class="page-header">
+
+		<h4 class="clearfix">
+			<div class="left">
+				<span class="icon16 icomoon-icon-loop"></span>
+				<span>Dashboard</span>				
+			</div>
+			<div class="right">
+				<a href="/cli" class="btn btn-mini">Graph Terminal</a> 
+				<a href="#dataInterval" id="dataIntervalBtn" data-toggle="modal" class="btn btn-mini">Data Interval</a> 
+				<a href="#" class="btn btn-mini">Refresh</a>				
+			</div>
+		</h4>
+
+	</div><!-- End .heading-->
+
+	<!-- Build page from here: -->
+	
+	<div id="container" ></div>
+
+	<div id="dataInterval" class="modal hide fade" style="display: none; ">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal">
+				<span class="icon12 minia-icon-close"></span>
+			</button>
+			<h3>Data Interval</h3>
+		</div>
+		<div class="modal-body">
+			<div class="paddingT15 paddingB15">
+				<form class="form-horizontal" id="add_server_form" action="#">
+					<div class="form-row row-fluid">
+						<div class="span12">
+							<div class="row-fluid">
+								<label class="form-label span4" for="normal">Data Interval</label>
+								<input class="span8" value="{{grahp_realtime_interval}}" name="edit_data_interval" id="edit_data_interval" type="text" />
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+		<div class="modal-footer">
+			<a href="#" class="btn" data-dismiss="modal">Close</a>
+			<a href="#" class="btn btn-primary" id="datainterval_save_btn_btn">Save</a>
+		</div>
+	</div>
+</div>
+<!--
+<div id="bond0" style="width:500;height:500px;"></div>
+-->
+<!--
+<div id="edit_interval_time_dialog" title="dialog">
+<p>Data Interval Time : <input type="text" value="15"></p>
+<p><input id="edit_interval_time_btn" type="button" value="edit"></p>
+</div>
+-->
+<script type="text/javascript" src="{{ STATIC_URL }}js/plugins/flotr2/flotr2.js"></script>
+<script type='text/javascript' src='{{ STATIC_URL }}js/plugins/mhr/dateformat.js'></script>
+<script type='text/javascript' src='{{ STATIC_URL }}js/plugins/mhr/table.js'></script>
+<script type='text/javascript' src='{{ STATIC_URL }}js/plugins/mhr/graph.js'></script>
+
+<style>
+	.chart_box{
+		background:#ffffff;
+		border: 1px solid #e4e4e4;
+		border-bottom-left-radius: 2px;
+		border-bottom-right-radius: 2px;
+		border-top-left-radius: 2px;
+		border-top-right-radius: 2px;
+	}
+	.chart_title{
+		font-weight:700;
+		/*margin:60px;
+		border-bottom: 1px solid #c4c4c4;
+		background : #f2f2f2;
+		background: url(http://192.168.0.220:8080/static/images/patterns/2.png) repeat;
+		height: auto;
+		background: url(http://192.168.0.220:8080/static/images/patterns/2.png) repeat;
+		position: relative;
+		border: 1px solid #C4C4C4;
+		border-top-left-radius: 2px;
+		border-top-right-radius: 2px;
+		-moz-box-shadow: 0 1px 0px rgba(255, 255, 255, 1);
+		-webkit-box-shadow: 0 1px 0px rgba(255, 255, 255, 1);
+		box-shadow: 0 1px 0px rgba(255, 255, 255, 1);*/
+	}
+	.chart_content{
+		
+		/*padding: 10px;
+		border: 1px solid #C4C4C4;
+		border-bottom-left-radius: 2px;
+		border-bottom-right-radius: 2px;
+		border-top: none;
+		background-color: white;
+		position: relative;*/
+	}
+	.in_chart_title{
+		/*margin : 10px;*/
+	}
+</style>
+<script type="text/javascript">
+
+	$(document).ready(function() {
+		
+		
+		//$("#progress").modal('show');
+
+		//$("#progress_bar").css('width','50%')
+		$("#datainterval_save_btn_btn").click(function() {
+			console.log($("#edit_data_interval").val());
+
+			var oApiData = {
+				grahp_realtime_interval : $("#edit_data_interval").val()
+			}
+			sendAajx('/api/editUserProfile/', oApiData, editUserProfileCallback);
+		})
+		function editUserProfileCallback(oResponse, apiUrl, apiData) {
+			$("#dataInterval").modal('hide');
+			if (oResponse.status.code == 2000) {
+				console.log(oResponse);
+			} else {
+				alert("fail")
+			}
+		}
+
+	});
+	
+	function getUserChartConf(){
+		var grahp_realtime_interval = "{{profile.grahp_realtime_interval}}"
+		var grahp_grid_outlineWidth = "{{profile.grahp_grid_outlineWidth}}"
+		var grahp_line_fill = "{{profile.grahp_line_fill}}"
+		var grahp_grid_color = "{{profile.grahp_grid_color}}"
+		var grahp_line_color = "{{profile.grahp_line_color}}"
+		if (grahp_line_fill=='0'){
+			grahp_line_fill = false;
+		}
+		else{
+			grahp_line_fill = true;
+		}
+		return {
+			grahp_realtime_interval : grahp_realtime_interval,
+			grahp_grid_outlineWidth : grahp_grid_outlineWidth,
+			grahp_line_fill : grahp_line_fill,
+			grahp_grid_color : grahp_grid_color,
+			grahp_line_color : grahp_line_color
+		};
+
+	}
+	
+	
+	function handlerTreeMenuEvent(apiName, apiData) {
+		if (apiName == GET_DATA) {
+			handleGetData(apiName, apiData);
+		} else {
+			console.log(apiName);
+		}
+	}
+
+	function getTargetData(apiData) {
+		var dataSeperat = apiData.split(APIDATA_SEPERATOR);
+		var target = new Array();
+
+		for (var index = 0; index < dataSeperat.length; index++) {
+			var dataNameValue = dataSeperat[index].split(APIDATA_EQUAL);
+			if (dataNameValue.length < 2)
+				continue;
+			target.push(dataNameValue[1]);
+		}
+		return target;
+	}
+
+	function handleGetData(apiName, apiData) {
+		var cCharter = new Charter();
+		cCharter.createTreeClickChart(apiData);
+		//console.log(apiName)
+		//console.log(apiData)
+		//oTarget = getTargetData(apiData);
+		//console.log(oTarget)
+		/*$("#container").mhrGraphTable({
+			'graphNumber' : oTarget.length
+		});
+		for (var index = 0; index < oTarget.length; index++) {
+			$("#bond_body_" + index).mhrGraphChart({
+				'realTimeActive' : false,
+				'target' : oTarget[index],
+				'titleId' : 'bond_title_' + index
+			});
+		}*/
+	}
+
+	function showDashboard() {
+		var cCharter = new Charter();
+		var chartConf = getUserChartConf()
+		//cCharter.createApiChart('bond','unspecified/121.78.236.134/rack_-dev-ttyUSB1.rrd','/api/getData/',chartConf);
+		cCharter.createDashboardChart();
+	}
+	showDashboard();
+	
+
+</script>
+{% endblock %}
